@@ -17,8 +17,6 @@ struct Drive{
 
 	PantherMotor frontLeftMotor;
 	PantherMotor frontRightMotor;
-	PantherMotor middleLeftMotor;
-	PantherMotor middleRightMotor;
 	PantherMotor rearLeftMotor;
 	PantherMotor rearRightMotor;
 	Encoder leftEncoder;
@@ -27,9 +25,8 @@ struct Drive{
 }typedef Drive;
 
 Drive initDrive(PantherMotor frontLeftMotor, PantherMotor frontRightMotor,
-		PantherMotor middleLeftMotor, PantherMotor middleRightMotor,
 		PantherMotor rearLeftMotor, PantherMotor rearRightMotor,
 		Encoder leftEncoder, Encoder rightEncoder);
-void tankDrive(Drive drive, int magnitude, int rotation);
+void tankDrive(Drive drive, int left, int right);
 
 #endif /* DRIVE_H_ */

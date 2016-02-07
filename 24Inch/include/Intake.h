@@ -8,14 +8,18 @@
 #ifndef INCLUDE_INTAKE_H_
 #define INCLUDE_INTAKE_H_
 
+#include "main.h"
+
 struct Intake{
 
-	PantherMotor intake1;
+	PantherMotor intake1Left;
+	PantherMotor intake1Right;
 	PantherMotor intake2;
+	PantherMotor intake3;
 
 }typedef Intake;
 
-Intake initIntake(PantherMotor intake1, PantherMotor intake2);
+Intake initIntake(PantherMotor intake1Left, PantherMotor intake1Right, PantherMotor intake2, PantherMotor intake3);
 void intake1In(Intake intake);
 void intake1Out(Intake intake);
 void intake1Stop(Intake intake);

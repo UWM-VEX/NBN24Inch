@@ -45,6 +45,8 @@
 
 #include <API.h>
 #include "OI.h"
+#include "IME.h"
+#include "PIDController.h"
 #include "PantherMotor.h"
 #include "Utilities.h"
 #include "Drive.h"
