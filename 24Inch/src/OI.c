@@ -58,3 +58,13 @@ int OIShooterDown()
 {
 	return joystickGetDigital(2, 5, JOY_UP);
 }
+
+int OIFullCourtShoot()
+{
+	return joystickGetDigital(2, 7, JOY_LEFT);
+}
+
+int OIHalfCourtShoot()
+{
+	return joystickGetDigital(2, 7, JOY_RIGHT);
+}

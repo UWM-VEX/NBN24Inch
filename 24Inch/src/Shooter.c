@@ -152,7 +152,7 @@ void shootFullCourt(Shooter *shooter)
 	changeShooterMode(shooter, SHOOTER_FULL_COURT);
 }
 
-void shooterHalfCourt(Shooter *shooter)
+void shootHalfCourt(Shooter *shooter)
 {
 	changeShooterMode(shooter, SHOOTER_HALF_COURT);
 }

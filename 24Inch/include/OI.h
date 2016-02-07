@@ -18,5 +18,7 @@ int OIShooterOn();
 int OIShooterOff();
 int OIShooterUp();
 int OIShooterDown();
+int OIFullCourtShoot();
+int OIHalfCourtShoot();
 
 #endif /* INCLUDE_OI_H_ */

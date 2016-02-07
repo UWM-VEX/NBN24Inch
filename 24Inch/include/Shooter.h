@@ -44,5 +44,8 @@ void shooterSetErrorEpsilon(Shooter *shooter, int errorEpsilon);
 void updateShooter(Shooter *shooter);
 int isShooterUpToSpeed(Shooter *shooter);
 void runShooterAtSpeed(Shooter *shooter);
+void shootFullCourt(Shooter *shooter);
+void shootHalfCourt(Shooter *shooter);
+void changeShooterMode(Shooter *shooter, int shooterMode);
 
 #endif /* INCLUDE_SHOOTER_H_ */

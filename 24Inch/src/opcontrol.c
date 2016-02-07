@@ -91,6 +91,15 @@ void operatorControl()
 			intake2Stop(robotIntake);
 		}
 
+		if(OIFullCourtShoot())
+		{
+			shootFullCourt(&robotShooter);
+		}
+		else if(OIHalfCourtShoot())
+		{
+			shootHalfCourt(&robotShooter);
+		}
+
 		if(OIShooterOn())
 		{
 			turnShooterOn(&robotShooter);
