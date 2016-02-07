@@ -7,7 +7,7 @@
 
 #include "main.h"
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, int IMEPort, int IMEInverted)
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int fullCourtSpeed, int halfCourtSpeed, int IMEPort, int IMEInverted)
 {
 	PIDController newController = controller;
 
@@ -15,7 +15,7 @@ Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor 
 
 	IME newIME = initIME(IMEPort, IMEInverted);
 
-	Shooter newShooter = {motor1, motor2, 0, defaultSpeed, 0, millis(), newController, 0, millis(), newIME, defaultSpeed};
+	Shooter newShooter = {motor1, motor2, 0, fullCourtSpeed, 0, millis(), newController, 0, millis(), newIME, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
 	return newShooter;
 }
 
@@ -34,12 +34,30 @@ void turnShooterOff(Shooter *shooter)
 
 void changeShooterSP(Shooter *shooter, int SP)
 {
-	(*shooter).speed = SP;
+	switch((*shooter).shooterMode)
+		{
+		case(SHOOTER_HALF_COURT):
+				(*shooter).halfCourtSpeed = SP;
+				break;
+
+		case(SHOOTER_FULL_COURT): default:
+				(*shooter).fullCourtSpeed = SP;
+				break;
+		}
 }
 
 void incrementShooterSP(Shooter *shooter, int amount)
 {
-	(*shooter).speed += amount;
+	switch((*shooter).shooterMode)
+	{
+	case(SHOOTER_HALF_COURT):
+			(*shooter).halfCourtSpeed += amount;
+			break;
+
+	case(SHOOTER_FULL_COURT): default:
+			(*shooter).fullCourtSpeed += amount;
+			break;
+	}
 }
 
 void runShooter(Shooter *shooter)
@@ -127,4 +145,30 @@ void runShooterAtSpeed(Shooter *shooter)
 			(*shooter).processVariable);
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);
+}
+
+void shootFullCourt(Shooter *shooter)
+{
+	changeShooterMode(shooter, SHOOTER_FULL_COURT);
+}
+
+void shooterHalfCourt(Shooter *shooter)
+{
+	changeShooterMode(shooter, SHOOTER_HALF_COURT);
+}
+
+void changeShooterMode(Shooter *shooter, int shooterMode)
+{
+	(*shooter).shooterMode = shooterMode;
+
+	switch(shooterMode)
+	{
+	case(SHOOTER_HALF_COURT):
+		(*shooter).speed = (*shooter).halfCourtSpeed;
+		break;
+
+	case(SHOOTER_FULL_COURT): default:
+		(*shooter).speed = (*shooter).fullCourtSpeed;
+		break;
+	}
 }
