@@ -8,6 +8,9 @@
 #ifndef INCLUDE_SHOOTER_H_
 #define INCLUDE_SHOOTER_H_
 
+#define SHOOTER_FULL_COURT 0
+#define SHOOTER_HALF_COURT 1
+
 struct Shooter{
 
 	PantherMotor motor1;
@@ -21,6 +24,9 @@ struct Shooter{
 	long lastOffTime;
 	IME ime;
 	int speed;
+	int shootingMode;
+	int fullCourtSP;
+	int halfCourtSP;
 
 }typedef Shooter;
 
