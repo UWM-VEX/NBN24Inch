@@ -7,15 +7,9 @@
 
 #include "main.h"
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, int IMEPort, int IMEInverted)
+Shooter initShooter(PantherMotor motor1, PantherMotor motor2, int defaultSpeed)
 {
-	PIDController newController = controller;
-
-	newController.setPoint = 0;
-
-	IME newIME = initIME(IMEPort, IMEInverted);
-
-	Shooter newShooter = {motor1, motor2, 0, defaultSpeed, 0, millis(), newController, 0, millis(), newIME, defaultSpeed};
+	Shooter newShooter = {motor1, motor2, 0, defaultSpeed, 0, millis(), millis(), defaultSpeed};
 	return newShooter;
 }
 
@@ -68,7 +62,7 @@ void runShooter(Shooter *shooter)
 			speed = (*shooter).lastSpeed;
 		}
 
-		speed = limit(speed, 3500, 0);
+		speed = limit(speed, 127, 0);
 	}
 
 	(*shooter).SP = speed;
@@ -76,7 +70,7 @@ void runShooter(Shooter *shooter)
 	runShooterAtSpeed(shooter);
 }
 
-void shooterSetKP(Shooter *shooter, double kP)
+/*void shooterSetKP(Shooter *shooter, double kP)
 {
 	setkP(&((*shooter).controller), kP);
 }
@@ -118,13 +112,19 @@ void updateShooter(Shooter *shooter)
 int isShooterUpToSpeed(Shooter *shooter)
 {
 	return (((millis() - (*shooter).lastOffTime)) > 100);
-}
+}*/
 
-void runShooterAtSpeed(Shooter *shooter)
+/*void runShooterAtSpeed(Shooter *shooter)
 {
 	(*shooter).controller.setPoint = (*shooter).SP;
 	int speed = runPIDController(&((*shooter).controller),
 			(*shooter).processVariable);
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);
+}*/
+
+void runShooterAtSpeed(Shooter *shooter)
+{
+	setPantherMotor((*shooter).motor1, (*shooter).SP);
+	setPantherMotor((*shooter).motor2, (*shooter).SP);
 }
