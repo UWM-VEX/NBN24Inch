@@ -13,5 +13,6 @@
 Drive robotDrive;
 Intake robotIntake;
 Shooter robotShooter;
+Encoder shooterEncoder;
 
 #endif /* INCLUDE_ROBOT_H_ */

@@ -40,8 +40,18 @@ void operatorControl()
 	int lastIntake1OutButton = 0;
 	int intake1RunningOut = 0;
 
+	long lastTime = micros();
+	int lastEncoder = encoderGet(shooterEncoder);
+
 	while (true)
 	{
+		long currentTime = micros();
+		int currentEncoder = encoderGet(shooterEncoder);
+
+		double speed = (double) ((currentEncoder - lastEncoder) / (currentTime - lastTime));
+
+		lcdPrint(uart1, 1, "%f", speed * 1000);
+
 		tankDrive(robotDrive, OIGetDriveLeft(), OIGetDriveRight());
 
 		if(OIGetIntake1In() && !lastIntake1InButton)
