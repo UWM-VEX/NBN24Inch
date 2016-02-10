@@ -58,3 +58,8 @@ int OIShooterDown()
 {
 	return joystickGetDigital(2, 5, JOY_UP);
 }
+
+int OIDeployRamp()
+{
+	return joystickGetDigital(1, 5, JOY_UP) && joystickGetDigital(1, 6, JOY_UP);
+}

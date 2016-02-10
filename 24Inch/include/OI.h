@@ -18,5 +18,6 @@ int OIShooterOn();
 int OIShooterOff();
 int OIShooterUp();
 int OIShooterDown();
+int OIDeployRamp();
 
 #endif /* INCLUDE_OI_H_ */

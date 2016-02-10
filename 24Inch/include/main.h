@@ -49,6 +49,7 @@
 #include "PIDController.h"
 #include "PantherMotor.h"
 #include "Utilities.h"
+#include "Ramp.h"
 #include "Drive.h"
 #include "Intake.h"
 #include "Shooter.h"
