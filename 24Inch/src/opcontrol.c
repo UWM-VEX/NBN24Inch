@@ -45,12 +45,21 @@ void operatorControl()
 
 	while (true)
 	{
-		long currentTime = micros();
-		int currentEncoder = encoderGet(shooterEncoder);
+		if((micros() - lastTime) > 100000)
+		{
+			int currentEncoder = encoderGet(shooterEncoder);
 
-		double speed = (double) ((currentEncoder - lastEncoder) / (currentTime - lastTime));
+			double speed = (double) ((double) (currentEncoder - lastEncoder) / (double) (micros() - lastTime));
 
-		lcdPrint(uart1, 1, "%f", speed * 1000);
+			int diff = currentEncoder - lastEncoder;
+
+			lastEncoder = encoderGet(shooterEncoder);
+
+			lastTime = micros();
+
+			lcdPrint(uart1, 1, "%f", speed * 100000);
+			lcdPrint(uart1, 2, "%d", diff);
+		}
 
 		tankDrive(robotDrive, OIGetDriveLeft(), OIGetDriveRight());
 
