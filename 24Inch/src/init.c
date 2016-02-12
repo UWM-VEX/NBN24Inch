@@ -42,11 +42,13 @@ void initializeIO() {
 void initialize() {
 	//imeInitializeAll();
 
+	lcdInit(uart1);
+
 	robotDrive = initDrive(initPantherMotor(4,1), initPantherMotor(2,0),
 			initPantherMotor(5,1), initPantherMotor(3,0),
 			encoderInit(1, 2, 0), encoderInit(3,4,0));
 	robotIntake = initIntake(initPantherMotor(8,1), initPantherMotor(1,1),
 			initPantherMotor(9,1), initPantherMotor(10,1));
 	IncrementalController shooterController = initIncrementalController(&shooterEncoder);
-	robotShooter = initShooter(shooterController, initPantherMotor(6,1), initPantherMotor(7,0), 2800);
+	robotShooter = initShooter(shooterController, initPantherMotor(6,1), initPantherMotor(7,0), 180);
 }

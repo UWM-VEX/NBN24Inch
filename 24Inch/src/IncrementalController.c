@@ -9,7 +9,7 @@
 
 IncrementalController initIncrementalController(RedEncoder *encoder)
 {
-	IncrementalController newController = {encoder, micros(), 0, 0};
+	IncrementalController newController = {encoder, micros(), 0.0, 0};
 	return newController;
 }
 
@@ -20,11 +20,9 @@ int runIncrementalController(IncrementalController *controller, double setPoint)
 		double currentVelocity = updateRedEncoder((*controller).encoder);
 		double error = currentVelocity - setPoint;
 
-		if(absDouble(currentVelocity) < 10 || absDouble(currentVelocity) > 1000)
-		{
-			//Unreasonable value from encoder, do not change output
-		}
-		else if(absDouble(error) < 2)
+		//lcdPrint(uart1, 1, "%f", currentVelocity);
+
+		if(absDouble(error) < 2)
 		{
 			//Controller within deadband, keep at correct speed
 		}
@@ -32,28 +30,33 @@ int runIncrementalController(IncrementalController *controller, double setPoint)
 		{
 			if(error > 10)
 			{
-				(*controller).output -= 5;
+				(*controller).output -= .5;
 			}
 			else
 			{
-				(*controller).output -= 2;
+				(*controller).output -= .2;
 			}
 		}
 		else
 		{
 			if(error < -10)
 			{
-				(*controller).output += 5;
+				(*controller).output += 0.5;
+				lcdSetText(uart1, 2, "Incrementing");
 			}
 			else
 			{
-				(*controller).output += 2;
+				(*controller).output += .2;
 			}
 		}
 
 		(*controller).error = error;
-		(*controller).output = limit((*controller).output, 127, 50);
+		(*controller).output = limitDouble((*controller).output, 127.0, 0.0);
 	}
 
-	return (*controller).output;
+	lcdPrint(uart1, 1, "%f", (*controller).output);
+
+	int output = (int) (*controller).output;
+
+	return output;
 }

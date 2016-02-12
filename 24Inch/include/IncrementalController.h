@@ -14,7 +14,7 @@ struct IncrementalController{
 
 	RedEncoder *encoder;
 	long lastReadTime;
-	int output;
+	double output;
 	double error;
 
 }typedef IncrementalController;

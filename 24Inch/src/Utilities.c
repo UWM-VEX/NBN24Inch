@@ -18,6 +18,16 @@ int limit(int num, int max, int min)
 }
 
 /**
+ * Returns a number limited between the min and max.
+ */
+double limitDouble(double num, double max, double min)
+{
+	if(num > max) return max;
+	else if(num < min) return min;
+	else return num;
+}
+
+/**
  * Returns the absolute value of an input.
  */
 int abs(int num)

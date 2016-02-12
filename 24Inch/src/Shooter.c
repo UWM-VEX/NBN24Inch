@@ -84,12 +84,20 @@ void updateShooter(Shooter *shooter)
 
 int isShooterUpToSpeed(Shooter *shooter)
 {
-	return (((millis() - (*shooter).lastOffTime)) > 100);
+	int atSpeed = (((millis() - (*shooter).lastOffTime)) > 100);
+
+	lcdSetBacklight(uart1, atSpeed);
+
+	return atSpeed;
 }
 
 void runShooterAtSpeed(Shooter *shooter)
 {
 	int speed = runIncrementalController(((*shooter).controller), (*shooter).SP);
+
+	//lcdPrint(uart1, 1, "%f", (*(*shooter).controller).error);
+	//lcdPrint(uart1, 2, "%d", speed);
+
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);
 }

@@ -12,6 +12,7 @@
 #define PI 3.14159265359
 
 int limit(int, int, int);
+double limitDouble(double, double, double);
 int abs(int);
 int inDeadBand(int realNum, int desiredNum, int deadBand);
 int holonomicInchesToIME(double inches, double wheelDiameter);
