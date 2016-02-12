@@ -64,6 +64,17 @@ void runShooter(Shooter *shooter)
 {
 	int speed;
 
+	switch((*shooter).shooterMode)
+	{
+	case(SHOOTER_HALF_COURT):
+		(*shooter).SP = (*shooter).halfCourtSpeed;
+		break;
+
+	case(SHOOTER_FULL_COURT): default:
+		(*shooter).SP = (*shooter).fullCourtSpeed;
+		break;
+	}
+
 	if((*shooter).turnedOn)
 	{
 		(*shooter).SP = (*shooter).speed;
@@ -164,11 +175,11 @@ void changeShooterMode(Shooter *shooter, int shooterMode)
 	switch(shooterMode)
 	{
 	case(SHOOTER_HALF_COURT):
-		(*shooter).speed = (*shooter).halfCourtSpeed;
+		(*shooter).SP = (*shooter).halfCourtSpeed;
 		break;
 
 	case(SHOOTER_FULL_COURT): default:
-		(*shooter).speed = (*shooter).fullCourtSpeed;
+		(*shooter).SP = (*shooter).fullCourtSpeed;
 		break;
 	}
 }
