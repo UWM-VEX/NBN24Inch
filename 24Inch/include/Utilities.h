@@ -15,5 +15,6 @@ int limit(int, int, int);
 int abs(int);
 int inDeadBand(int realNum, int desiredNum, int deadBand);
 int holonomicInchesToIME(double inches, double wheelDiameter);
+double absDouble(double num);
 
 #endif /* UTILITIES_H_ */

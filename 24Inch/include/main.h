@@ -49,6 +49,8 @@
 #include "PIDController.h"
 #include "PantherMotor.h"
 #include "Utilities.h"
+#include "RedEncoder.h"
+#include "IncrementalController.h"
 #include "Drive.h"
 #include "Intake.h"
 #include "Shooter.h"

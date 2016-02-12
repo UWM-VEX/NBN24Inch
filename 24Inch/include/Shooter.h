@@ -16,25 +16,18 @@ struct Shooter{
 	int SP;
 	int lastSpeed;
 	long lastChangeTime;
-	PIDController controller;
-	int processVariable;
+	IncrementalController *controller;
 	long lastOffTime;
-	IME ime;
 	int speed;
 
 }typedef Shooter;
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, int IMEPort, int IMEInverted);
+Shooter initShooter(IncrementalController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed);
 void turnShooterOn(Shooter *shooter);
 void turnShooterOff(Shooter *shooter);
 void changeShooterSP(Shooter *shooter, int SP);
 void incrementShooterSP(Shooter *shooter, int amount);
 void runShooter(Shooter *shooter);
-void shooterSetKP(Shooter *shooter, double kP);
-void shooterSetKI(Shooter *shooter, double kI);
-void shooterSetKD(Shooter *shooter, double kD);
-void shooterSetKF(Shooter *shooter, double kF);
-void shooterSetErrorEpsilon(Shooter *shooter, int errorEpsilon);
 void updateShooter(Shooter *shooter);
 int isShooterUpToSpeed(Shooter *shooter);
 void runShooterAtSpeed(Shooter *shooter);

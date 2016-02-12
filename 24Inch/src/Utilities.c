@@ -38,3 +38,9 @@ int holonomicInchesToIME(double inches, double wheelDiameter)
 {
 	return (int) (inches / (PI * wheelDiameter * SIN_45) * 627.2);
 }
+
+double absDouble(double num)
+{
+	if(num < 0) return -num;
+	else return num;
+}
