@@ -21,6 +21,9 @@ void turnShooterOn(Shooter *shooter)
 {
 	(*shooter).turnedOn = 1;
 	(*shooter).SP = (*shooter).speed;
+
+	forceOutput((*shooter).controller, (double) (*shooter).SP);
+
 	puts("Shooter turned on.");
 }
 
@@ -95,8 +98,11 @@ void runShooterAtSpeed(Shooter *shooter)
 {
 	int speed = runIncrementalController(((*shooter).controller), (*shooter).SP);
 
-	//lcdPrint(uart1, 1, "%f", (*(*shooter).controller).error);
-	//lcdPrint(uart1, 2, "%d", speed);
+	if(speed < 15)
+		speed = 0;
+
+	lcdPrint(uart1, 1, "Err: %f", (*(*shooter).controller).error);
+	lcdPrint(uart1, 2, "Out: %d", speed);
 
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);

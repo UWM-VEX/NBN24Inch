@@ -9,7 +9,7 @@
 
 IncrementalController initIncrementalController(RedEncoder *encoder)
 {
-	IncrementalController newController = {encoder, micros(), 0.0, 0};
+	IncrementalController newController = {encoder, micros(), 0.0, 0, micros()};
 	return newController;
 }
 
@@ -19,44 +19,58 @@ int runIncrementalController(IncrementalController *controller, double setPoint)
 	{
 		double currentVelocity = updateRedEncoder((*controller).encoder);
 		double error = currentVelocity - setPoint;
-
-		//lcdPrint(uart1, 1, "%f", currentVelocity);
-
-		if(absDouble(error) < 2)
-		{
-			//Controller within deadband, keep at correct speed
-		}
-		else if(error > 0)
-		{
-			if(error > 10)
-			{
-				(*controller).output -= .5;
-			}
-			else
-			{
-				(*controller).output -= .2;
-			}
-		}
-		else
-		{
-			if(error < -10)
-			{
-				(*controller).output += 0.5;
-				lcdSetText(uart1, 2, "Incrementing");
-			}
-			else
-			{
-				(*controller).output += .2;
-			}
-		}
-
 		(*controller).error = error;
-		(*controller).output = limitDouble((*controller).output, 127.0, 0.0);
+
+			if(micros() - (*controller).lastForceTime > 6000000)
+			{
+			(*controller).lastReadTime = micros();
+
+			//lcdPrint(uart1, 1, "%f", currentVelocity);
+
+			if(absDouble(error) < 2)
+			{
+				//Controller within deadband, keep at correct speed
+			}
+			else if(error > 0)
+			{
+				if(error > 5)
+				{
+					(*controller).output -= .6;
+				}
+				else
+				{
+					(*controller).output -= .3;
+				}
+			}
+			else
+			{
+				if(error < -10)
+				{
+					(*controller).output += .5;
+					//lcdSetText(uart1, 2, "Incrementing");
+				}
+				else
+				{
+					(*controller).output += .3;
+				}
+			}
+
+			(*controller).error = error;
+			(*controller).output = limitDouble((*controller).output, 127.0, 0.0);
+		}
 	}
 
-	lcdPrint(uart1, 1, "%f", (*controller).output);
+	//lcdPrint(uart1, 1, "%f", (*controller).output);
 
 	int output = (int) (*controller).output;
 
 	return output;
+}
+
+void forceOutput(IncrementalController *controller, double velocity)
+{
+	(*controller).output = velocity * 0.33;
+	(*controller).output = limitDouble((*controller).output, 127.0, 0.0);
+
+	(*controller).lastForceTime = micros();
 }
