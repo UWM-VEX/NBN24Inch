@@ -103,9 +103,9 @@ void updateShooter(Shooter *shooter)
 {
 	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
 
-	printf("Speed: %d\n", (*shooter).processVariable);
+	lcdPrint(uart1, 1, "Speed: %d\n", (*shooter).processVariable);
 
-	printf("Error: %d\n", (*shooter).controller.setPoint - (*shooter).processVariable);
+	lcdPrint(uart1, 2, "Error: %d\n", (*shooter).controller.setPoint - (*shooter).processVariable);
 
 	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 250)
 	{
@@ -123,6 +123,9 @@ void runShooterAtSpeed(Shooter *shooter)
 	(*shooter).controller.setPoint = (*shooter).SP;
 	int speed = runPIDController(&((*shooter).controller),
 			(*shooter).processVariable);
+
+	speed = limit(speed, 127, 0);
+
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);
 }

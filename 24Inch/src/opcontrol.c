@@ -112,6 +112,8 @@ void operatorControl()
 		lastIncrement = OIShooterUp();
 		lastDecrement = OIShooterDown();
 
+		updateShooter(&robotShooter);
+
 		runShooter(&robotShooter);
 
 		delay(25);
