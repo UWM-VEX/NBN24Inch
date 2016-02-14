@@ -114,12 +114,10 @@ void operatorControl()
 
 		runShooter(&robotShooter);
 
-		if(OIDeployRamp(&robotRamp))
+		if(OIDeployRamp())
 		{
-			deployRamp(&robotRamp);
+			deployRamp(robotRamp);
 		}
-
-		runRamp(&robotRamp);
 
 		delay(25);
 

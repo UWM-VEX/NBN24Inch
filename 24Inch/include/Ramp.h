@@ -12,16 +12,11 @@
 
 struct Ramp{
 
-	int upperPort;
-	int lowerPort;
-	int delayTime;
-	long deployTime;
-	int deployed;
+	int port;
 
 }typedef Ramp;
 
-Ramp initRamp(int upperPort, int lowerPort, int delayTime);
-void deployRamp(Ramp *ramp);
-void runRamp(Ramp *ramp);
+Ramp initRamp(int port);
+void deployRamp(Ramp ramp);
 
 #endif /* INCLUDE_RAMP_H_ */

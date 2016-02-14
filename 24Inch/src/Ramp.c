@@ -7,30 +7,17 @@
 
 #include "main.h"
 
-Ramp initRamp(int upperPort, int lowerPort, int delayTime)
+Ramp initRamp(int port)
 {
-	pinMode(upperPort, OUTPUT);
-	pinMode(lowerPort, INPUT);
+	pinMode(port, OUTPUT);
 
-	digitalWrite(upperPort, LOW);
-	digitalWrite(lowerPort, LOW);
+	digitalWrite(port, LOW);
 
-	Ramp newRamp = {upperPort, lowerPort, delayTime, 0, 0};
+	Ramp newRamp = {port};
 	return newRamp;
 }
 
-void deployRamp(Ramp *ramp)
+void deployRamp(Ramp ramp)
 {
-	(*ramp).deployed = 1;
-	(*ramp).deployTime = millis();
-
-	digitalWrite((*ramp).upperPort, HIGH);
-}
-
-void runRamp(Ramp *ramp)
-{
-	if((*ramp).deployed && (*ramp).deployTime - millis() > (*ramp).delayTime)
-	{
-		digitalWrite((*ramp).lowerPort, HIGH);
-	}
+	digitalWrite(ramp.port, HIGH);
 }
