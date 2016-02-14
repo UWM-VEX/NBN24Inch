@@ -45,10 +45,11 @@
 
 #include <API.h>
 #include "OI.h"
-#include "IME.h"
+#include "RedEncoder.h"
 #include "PIDController.h"
 #include "PantherMotor.h"
 #include "Utilities.h"
+#include "Ramp.h"
 #include "Drive.h"
 #include "Intake.h"
 #include "Shooter.h"

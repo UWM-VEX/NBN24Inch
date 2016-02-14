@@ -63,6 +63,10 @@ int OIFullCourtShoot()
 {
 	return joystickGetDigital(2, 7, JOY_LEFT);
 }
+int OIDeployRamp()
+{
+	return joystickGetDigital(1, 5, JOY_UP) && joystickGetDigital(1, 6, JOY_UP);
+}
 
 int OIHalfCourtShoot()
 {

@@ -121,7 +121,23 @@ void operatorControl()
 		lastIncrement = OIShooterUp();
 		lastDecrement = OIShooterDown();
 
+		updateShooter(&robotShooter);
+
+		if(isShooterUpToSpeed(&robotShooter))
+		{
+			lcdSetBacklight(uart1, true);
+		}
+		else
+		{
+			lcdSetBacklight(uart1, false);
+		}
+
 		runShooter(&robotShooter);
+
+		if(OIDeployRamp())
+		{
+			deployRamp(robotRamp);
+		}
 
 		delay(25);
 
