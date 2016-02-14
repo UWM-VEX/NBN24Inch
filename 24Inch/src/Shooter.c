@@ -107,7 +107,7 @@ void updateShooter(Shooter *shooter)
 
 	lcdPrint(uart1, 2, "Error: %d\n", (*shooter).controller.setPoint - (*shooter).processVariable);
 
-	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 250)
+	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 1)
 	{
 		(*shooter).lastOffTime = millis();
 	}

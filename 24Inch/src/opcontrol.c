@@ -114,6 +114,15 @@ void operatorControl()
 
 		updateShooter(&robotShooter);
 
+		if(isShooterUpToSpeed(&robotShooter))
+		{
+			lcdSetBacklight(uart1, true);
+		}
+		else
+		{
+			lcdSetBacklight(uart1, false);
+		}
+
 		runShooter(&robotShooter);
 
 		delay(25);
