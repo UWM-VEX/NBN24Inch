@@ -45,7 +45,7 @@
 
 #include <API.h>
 #include "OI.h"
-#include "IME.h"
+#include "RedEncoder.h"
 #include "PIDController.h"
 #include "PantherMotor.h"
 #include "Utilities.h"
