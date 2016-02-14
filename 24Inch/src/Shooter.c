@@ -7,15 +7,13 @@
 
 #include "main.h"
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, int IMEPort, int IMEInverted)
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, RedEncoder encoder)
 {
 	PIDController newController = controller;
 
 	newController.setPoint = 0;
 
-	IME newIME = initIME(IMEPort, IMEInverted);
-
-	Shooter newShooter = {motor1, motor2, 0, defaultSpeed, 0, millis(), newController, 0, millis(), newIME, defaultSpeed};
+	Shooter newShooter = {motor1, motor2, 0, defaultSpeed, 0, millis(), newController, 0, millis(), &encoder, defaultSpeed};
 	return newShooter;
 }
 
@@ -68,7 +66,7 @@ void runShooter(Shooter *shooter)
 			speed = (*shooter).lastSpeed;
 		}
 
-		speed = limit(speed, 3500, 0);
+		speed = limit(speed, 500, 0);
 	}
 
 	(*shooter).SP = speed;
@@ -103,7 +101,7 @@ void shooterSetErrorEpsilon(Shooter *shooter, int errorEpsilon)
 
 void updateShooter(Shooter *shooter)
 {
-	(*shooter).processVariable = getIMEVelocity((*shooter).ime);
+	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
 
 	printf("Speed: %d\n", (*shooter).processVariable);
 

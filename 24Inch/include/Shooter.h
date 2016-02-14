@@ -19,12 +19,12 @@ struct Shooter{
 	PIDController controller;
 	int processVariable;
 	long lastOffTime;
-	IME ime;
+	RedEncoder *encoder;
 	int speed;
 
 }typedef Shooter;
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, int IMEPort, int IMEInverted);
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, RedEncoder encoder);
 void turnShooterOn(Shooter *shooter);
 void turnShooterOff(Shooter *shooter);
 void changeShooterSP(Shooter *shooter, int SP);
