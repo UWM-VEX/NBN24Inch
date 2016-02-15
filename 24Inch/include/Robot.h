@@ -9,6 +9,7 @@
 #define INCLUDE_ROBOT_H_
 
 #include "main.h"
+#define WHEEL_DIAMETER 3.25
 
 Drive robotDrive;
 Intake robotIntake;

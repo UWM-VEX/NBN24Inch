@@ -44,6 +44,7 @@
 #define MAIN_H_
 
 #include <API.h>
+#include "Auto.h"
 #include "OI.h"
 #include "RedEncoder.h"
 #include "PIDController.h"
@@ -54,6 +55,7 @@
 #include "Intake.h"
 #include "Shooter.h"
 #include "Robot.h"
+#include "PropDriveToWayPoint.h"
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
