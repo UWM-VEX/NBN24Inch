@@ -49,6 +49,6 @@ void initialize() {
 			encoderInit(1, 2, 0), encoderInit(3,4,0), gyroInit(1, 0));
 	robotIntake = initIntake(initPantherMotor(8,1), initPantherMotor(1,1),
 			initPantherMotor(9,1), initPantherMotor(10,1));
-	PIDController shooterPID = initPIDController(10 , 0, 0, .33, 0, 0.5);
-	robotShooter = initShooter(shooterPID, initPantherMotor(6,1), initPantherMotor(7,0), 180, shooterEncoder);
+	PIDController shooterPID = initPIDController(/*10*/0.2, 0, 0, .33, 0, 0.5);
+	robotShooter = initShooter(shooterPID, initPantherMotor(6,1), initPantherMotor(7,0), 220, 160, shooterEncoder);
 }
