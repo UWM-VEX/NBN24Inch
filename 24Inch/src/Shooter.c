@@ -7,13 +7,13 @@
 
 #include "main.h"
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int defaultSpeed, RedEncoder encoder)
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder)
 {
 	PIDController newController = controller;
 
 	newController.setPoint = 0;
 
-	Shooter newShooter = {motor1, motor2, 0, defaultSpeed, 0, millis(), newController, 0, millis(), &encoder, defaultSpeed};
+	Shooter newShooter = {motor1, motor2, 0, fullCourtSpeed, 0, millis(), newController, 0, millis(), &encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
 	return newShooter;
 }
 
@@ -176,11 +176,14 @@ void changeShooterMode(Shooter *shooter, int shooterMode)
 	switch(shooterMode)
 	{
 	case(SHOOTER_HALF_COURT):
-		(*shooter).SP = (*shooter).halfCourtSpeed;
+		(*shooter).speed = (*shooter).halfCourtSpeed;
 		break;
 
-	case(SHOOTER_FULL_COURT): default:
-		(*shooter).SP = (*shooter).fullCourtSpeed;
+	case(SHOOTER_FULL_COURT):
+		(*shooter).speed = (*shooter).fullCourtSpeed;
 		break;
 	}
+
+	if((*shooter).turnedOn == 1)
+		turnShooterOn(shooter);
 }
