@@ -4,6 +4,13 @@
 *.obj
 *.elf
 
+Project Files
+*.project
+*.cproject
+*.prefs
+*.mk
+*.ld
+
 # Precompiled Headers
 *.gch
 *.pch
