@@ -86,7 +86,7 @@ void autonomousInit()
 	 * given about them. By hovering over the function name, you can see a
 	 * list of the arguments to pass in.
 	 */
-	driveToGoal = initPropDriveToWayPoint(robotDrive, 12 * 7, 0);
+	driveToGoal = initPropDriveToWayPoint(robotDrive, 12 * 4, 0);
 	backFromGoal = initPropDriveToWayPoint(robotDrive, -18, 0);
 	turnToBalls = initPropDriveToWayPoint(robotDrive, 0, 180);
 	driveToBalls = initPropDriveToWayPoint(robotDrive, 24, 0);
