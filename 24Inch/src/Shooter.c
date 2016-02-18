@@ -73,17 +73,26 @@ void runShooter(Shooter *shooter)
 		break;
 	}
 
+	int dT = (int) (millis() - (*shooter).lastChangeTime);
+
 	if((*shooter).turnedOn)
 	{
-		(*shooter).SP = (*shooter).speed;
-		speed = (*shooter).SP;
+		if(dT > 50)
+		{
+			(*shooter).SP = (*shooter).speed;
+			speed = limit(speed, (*shooter).lastSpeed - 5, (*shooter).lastSpeed + 5);
+			(*shooter).lastSpeed = (*shooter).SP;
 
-		(*shooter).lastSpeed = (*shooter).SP;
+			(*shooter).lastChangeTime = millis();
+		}
+		else
+		{
+			(*shooter).SP = (*shooter).speed;
+			speed = limit(speed, (*shooter).lastSpeed - 10, (*shooter).lastSpeed + 10);
+		}
 	}
 	else
 	{
-		int dT = (int) (millis() - (*shooter).lastChangeTime);
-
 		if(dT > 50)
 		{
 			speed = (*shooter).lastSpeed - 10;
