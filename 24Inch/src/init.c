@@ -29,6 +29,9 @@ RedEncoder shooterEncoder;
 void initializeIO() {
 	robotRamp = initRamp(7);
 	shooterEncoder = initRedEncoder(encoderInit(5, 6, 1), 100000);
+	robotDrive = initDrive(initPantherMotor(3,1), initPantherMotor(4,0),
+				initPantherMotor(8,1), initPantherMotor(9,0),
+				encoderInit(11, 12, 0), encoderInit(1,2,0));
 }
 
 /**
@@ -44,11 +47,8 @@ void initialize() {
 	//imeInitializeAll();
 	lcdInit(uart1);
 
-	robotDrive = initDrive(initPantherMotor(4,1), initPantherMotor(2,0),
-			initPantherMotor(5,1), initPantherMotor(3,0),
-			encoderInit(1, 2, 0), encoderInit(3,4,0));
-	robotIntake = initIntake(initPantherMotor(8,1), initPantherMotor(1,1),
-			initPantherMotor(9,1), initPantherMotor(10,1));
+	robotIntake = initIntake(initPantherMotor(7,1), initPantherMotor(1,0),
+			initPantherMotor(10,1));
 	PIDController shooterPID = initPIDController(/*10*/0.2, 0, 0, .33, 0, 0.5);
-	robotShooter = initShooter(shooterPID, initPantherMotor(6,1), initPantherMotor(7,0), 220, 160, shooterEncoder);
+	robotShooter = initShooter(shooterPID, initPantherMotor(2,1), initPantherMotor(5,0), initPantherMotor(6,0), 220, 160, shooterEncoder);
 }
