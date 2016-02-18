@@ -7,13 +7,13 @@
 
 #include "main.h"
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder)
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, PantherMotor motor3, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder)
 {
 	PIDController newController = controller;
 
 	newController.setPoint = 0;
 
-	Shooter newShooter = {motor1, motor2, 0, fullCourtSpeed, 0, millis(), newController, 0, millis(), &encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
+	Shooter newShooter = {motor1, motor2, motor3, 0, fullCourtSpeed, 0, millis(), newController, 0, millis(), &encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
 	return newShooter;
 }
 
@@ -157,6 +157,7 @@ void runShooterAtSpeed(Shooter *shooter)
 
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);
+	setPantherMotor((*shooter).motor3, speed);
 }
 
 void shootFullCourt(Shooter *shooter)
