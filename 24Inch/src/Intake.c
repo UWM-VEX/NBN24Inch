@@ -7,30 +7,27 @@
 
 #include "main.h"
 
-Intake initIntake(PantherMotor intake1Left, PantherMotor intake1Right, PantherMotor intake2, PantherMotor intake3)
+Intake initIntake(PantherMotor intake1, PantherMotor intake2, PantherMotor intake3)
 {
-	Intake newIntake = {intake1Left, intake1Right, intake2, intake3};
+	Intake newIntake = {intake1, intake2, intake3};
 	return newIntake;
 }
 
 void intake1In(Intake intake)
 {
-	setPantherMotor(intake.intake1Left, 127);
-	setPantherMotor(intake.intake1Right, 127);
+	setPantherMotor(intake.intake1, 127);
 	setPantherMotor(intake.intake2, 127);
 }
 
 void intake1Out(Intake intake)
 {
-	setPantherMotor(intake.intake1Left, -127);
-		setPantherMotor(intake.intake1Right, -127);
+	setPantherMotor(intake.intake1, -127);
 		setPantherMotor(intake.intake2, -127);
 }
 
 void intake1Stop(Intake intake)
 {
-	setPantherMotor(intake.intake1Left, 0);
-	setPantherMotor(intake.intake1Right, 0);
+	setPantherMotor(intake.intake1, 0);
 	setPantherMotor(intake.intake2, 0);
 }
 

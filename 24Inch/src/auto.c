@@ -66,11 +66,10 @@
  * or instantiated, an example is shown below.
  */
 
-PropDriveToWayPoint driveToGoal;
-PropDriveToWayPoint backFromGoal;
-PropDriveToWayPoint turnToBalls;
-PropDriveToWayPoint driveToBalls;
-PropDriveToWayPoint turnToGoal;
+PropDriveToWayPoint drive24Forward;
+PropDriveToWayPoint turn180Left;
+PropDriveToWayPoint turn180Right;
+PropDriveToWayPoint drive24Backward;
 
 int isAuto = 1;
 
@@ -86,11 +85,10 @@ void autonomousInit()
 	 * given about them. By hovering over the function name, you can see a
 	 * list of the arguments to pass in.
 	 */
-	driveToGoal = initPropDriveToWayPoint(robotDrive, 12 * 4, 0);
-	backFromGoal = initPropDriveToWayPoint(robotDrive, -18, 0);
-	turnToBalls = initPropDriveToWayPoint(robotDrive, 0, 180);
-	driveToBalls = initPropDriveToWayPoint(robotDrive, 24, 0);
-	turnToGoal = initPropDriveToWayPoint(robotDrive, 0, -180);
+	drive24Forward = initPropDriveToWayPoint(robotDrive, 24, 0);
+	turn180Left = initPropDriveToWayPoint(robotDrive, 0, -180);
+	drive24Backward = initPropDriveToWayPoint(robotDrive, -24, 0);
+	turn180Right = initPropDriveToWayPoint(robotDrive, 0, 180);
 
 
 
@@ -120,104 +118,30 @@ void autonomousPeriodic()
 	case(MODE_1):
 				switch(autonomousInfo.step)
 				{
-				case(1): //Drive to the goal
+				case(1):
+					propDriveToWayPoint(&drive24Forward);
 
-					propDriveToWayPoint(&driveToGoal);
-
-					turnShooterOn(&robotShooter);
-
-					runShooter(&robotShooter);
-
-					lcdSetText(uart1, 2, "Step 1");
-
-					autonomousInfo.isFinished = driveToGoal.isFinished;
-
+					autonomousInfo.isFinished = drive24Forward.isFinished;
 					break;
 
-				case(2): //Shoot preloads
+				case(2):
+					propDriveToWayPoint(&turn180Left);
 
-					intake1In(robotIntake);
-					intake2In(robotIntake);
-
-					runShooter(&robotShooter);
-
-					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
-
+					autonomousInfo.isFinished = turn180Left.isFinished;
 					break;
 
-				case(3): //Back away from the goal
+				case(3):
+					propDriveToWayPoint(&drive24Backward);
 
-					runShooter(&robotShooter);
-
-					propDriveToWayPoint(&backFromGoal);
-
-					autonomousInfo.isFinished = backFromGoal.isFinished;
-
+					autonomousInfo.isFinished = drive24Backward.isFinished;
 					break;
 
-				case(4): //Turn towards balls
+				case(4):
+					propDriveToWayPoint(&turn180Right);
 
-					runShooter(&robotShooter);
-
-					propDriveToWayPoint(&turnToBalls);
-
-					autonomousInfo.isFinished = turnToBalls.isFinished;
-
+					autonomousInfo.isFinished = turn180Right.isFinished;
 					break;
 
-				case(5): //Drive to the balls
-
-					runShooter(&robotShooter);
-
-					propDriveToWayPoint(&driveToBalls);
-
-					autonomousInfo.isFinished = driveToBalls.isFinished;
-
-					break;
-
-				case(6): //Turn back towards the goal
-
-					runShooter(&robotShooter);
-
-					propDriveToWayPoint(&turnToGoal);
-
-					autonomousInfo.isFinished = turnToGoal.isFinished;
-
-					break;
-
-				case(7): //Drive back towards the goal
-
-					runShooter(&robotShooter);
-
-					tankDrive(robotDrive, 75, 75);
-
-					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 2000;
-
-					break;
-
-				case(8): //Shoot the balls
-
-					runShooter(&robotShooter);
-
-					tankDrive(robotDrive, 0, 0);
-
-					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
-
-					break;
-
-				case(9): //Stop everything
-
-					intake1Stop(robotIntake);
-					intake2Stop(robotIntake);
-
-					turnShooterOff(&robotShooter);
-					runShooter(&robotShooter);
-
-					tankDrive(robotDrive, 0, 0);
-
-					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 2000;
-
-					break;
 
 				default:
 					isAuto = 0;

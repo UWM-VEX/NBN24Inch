@@ -7,13 +7,13 @@
 
 #include "main.h"
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder)
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, PantherMotor motor3, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder)
 {
 	PIDController newController = controller;
 
 	newController.setPoint = 0;
 
-	Shooter newShooter = {motor1, motor2, 0, fullCourtSpeed, 0, millis(), newController, 0, millis(), &encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
+	Shooter newShooter = {motor1, motor2, motor3, 0, fullCourtSpeed, 0, millis(), newController, 0, millis(), &encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
 	return newShooter;
 }
 
@@ -46,6 +46,8 @@ void changeShooterSP(Shooter *shooter, int SP)
 
 void incrementShooterSP(Shooter *shooter, int amount)
 {
+	(*shooter).speed += amount;
+
 	switch((*shooter).shooterMode)
 	{
 	case(SHOOTER_HALF_COURT):
@@ -132,9 +134,10 @@ void updateShooter(Shooter *shooter)
 {
 	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
 
-	lcdPrint(uart1, 1, "Speed: %d\n", (*shooter).processVariable);
+	//lcdPrint(uart1, 1, "Speed: %d", (*shooter).processVariable);
+	lcdPrint(uart1, 1, "SP: %d", (*shooter).SP);
 
-	lcdPrint(uart1, 2, "Error: %d\n", (*shooter).controller.setPoint - (*shooter).processVariable);
+	lcdPrint(uart1, 2, "Error: %d", (*shooter).controller.setPoint - (*shooter).processVariable);
 
 	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 1)
 	{
@@ -157,6 +160,7 @@ void runShooterAtSpeed(Shooter *shooter)
 
 	setPantherMotor((*shooter).motor1, speed);
 	setPantherMotor((*shooter).motor2, speed);
+	setPantherMotor((*shooter).motor3, speed);
 }
 
 void shootFullCourt(Shooter *shooter)

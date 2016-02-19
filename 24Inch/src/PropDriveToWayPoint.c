@@ -55,8 +55,8 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 		(*step).initialAngle = -gyroGet((*step).drive.gyro);
 	}
 
-	//lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
-	//lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
+	lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
+	lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
 	//lcdPrint(uart1, 2, "Gyro: %d", -gyroGet((*step).drive.gyro));
 
 	printf("\nInitial Distance: %f", (*step).initialDistance);
@@ -86,7 +86,7 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 		{
 			//magnitude = (forward) ? -10 : 10;
 			(*step).goodDistance = 1;
-			lcdSetText(uart1, 1, "Good Distance");
+			//lcdSetText(uart1, 1, "Good Distance");
 		}
 		else if(absDouble(distanceError) < (*step).slowDownDistance)
 		{
@@ -98,7 +98,7 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 			if(forward) magnitude = limit(magnitude, (*step).maxSpeed, (*step).minSpeed);
 			else magnitude = limit(magnitude, -(*step).minSpeed, -(*step).maxSpeed);
 
-			lcdSetText(uart1, 1, "Slowing Down");
+			//lcdSetText(uart1, 1, "Slowing Down");
 		}
 		else if(autonomousInfo.elapsedTime < (*step).timeToAccelerate)
 		{
@@ -107,14 +107,14 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 
 			if(!forward) magnitude *= -1;
 
-			lcdSetText(uart1, 1, "Accelerating");
+			//lcdSetText(uart1, 1, "Accelerating");
 		}
 		else
 		{
 			if(forward) magnitude = (*step).maxSpeed;
 			else magnitude = -(*step).maxSpeed;
 
-			lcdSetText(uart1, 1, "Coasting");
+			//lcdSetText(uart1, 1, "Coasting");
 		}
 	}
 	else
