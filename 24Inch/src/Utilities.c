@@ -34,7 +34,18 @@ int inDeadBand(int realNum, int desiredNum, int deadBand)
 	return (abs(realNum - desiredNum) < deadBand);
 }
 
-int holonomicInchesToIME(double inches, double wheelDiameter)
+double encoderToInches(int encoderLines, double wheelDiameter)
 {
-	return (int) (inches / (PI * wheelDiameter * SIN_45) * 627.2);
+	return ((encoderLines / 360.0) * PI * wheelDiameter);
+}
+
+double absDouble(double num)
+{
+	if(num < 0) return -num;
+	else return num;
+}
+
+int inDeadBandDouble(double realNum, double desiredNum, double deadBand)
+{
+	return (absDouble(realNum - desiredNum) < deadBand);
 }
