@@ -9,7 +9,7 @@
 
 PropDriveToWayPoint initPropDriveToWayPoint(Drive drive, double distance, int rotation)
 {
-	PropDriveToWayPoint newStep = {drive, 100, 2.00, distance, rotation, 100, 15, 0, 0, 0, 18.0, 500, 0};
+	PropDriveToWayPoint newStep = {drive, 100, 1.00, distance, rotation, 100, 70, 0, 0, 0, 18.0, 500, 0};
 	return newStep;
 }
 
@@ -35,6 +35,7 @@ void propDriveToWayPointSetMinSpeed(PropDriveToWayPoint *step, int speed)
 
 void propDriveToWayPoint(PropDriveToWayPoint *step)
 {
+	lcdPrint(uart1, 2, "Gyro: %d", gyroGet((*step).drive.gyro));
 	int goodRotation = 0;
 	int magnitude = 0;
 	int rotation = 0;
@@ -79,43 +80,49 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 	int right = encoderGet((*step).drive.rightEncoder);
 
 	printf("Left: %d\nRight: %d\n\n", left, right);
-
-	if(absDouble(distanceError) < .5)
+	if(driveStraight)
 	{
-		//magnitude = (forward) ? -10 : 10;
-		(*step).goodDistance = 1;
-		lcdSetText(uart1, 1, "Good Distance");
-	}
-	else if(absDouble(distanceError) < (*step).slowDownDistance)
-	{
-		magnitude = (int) (distanceError * (*step).magnitudeKP);
+		if(absDouble(distanceError) < .5)
+		{
+			//magnitude = (forward) ? -10 : 10;
+			(*step).goodDistance = 1;
+			lcdSetText(uart1, 1, "Good Distance");
+		}
+		else if(absDouble(distanceError) < (*step).slowDownDistance)
+		{
+			magnitude = (int) (distanceError * (*step).magnitudeKP);
 
-		if(forward) magnitude += (*step).minSpeed;
-		else magnitude -= (*step).minSpeed;
+			if(forward) magnitude += (*step).minSpeed;
+			else magnitude -= (*step).minSpeed;
 
-		if(forward) magnitude = limit(magnitude, (*step).maxSpeed, (*step).minSpeed);
-		else magnitude = limit(magnitude, -(*step).minSpeed, -(*step).maxSpeed);
+			if(forward) magnitude = limit(magnitude, (*step).maxSpeed, (*step).minSpeed);
+			else magnitude = limit(magnitude, -(*step).minSpeed, -(*step).maxSpeed);
 
-		lcdSetText(uart1, 1, "Slowing Down");
-	}
-	else if(autonomousInfo.elapsedTime < (*step).timeToAccelerate)
-	{
-		magnitude = (int) ((autonomousInfo.elapsedTime * 1.0 / (*step).timeToAccelerate)
-				* (*step).maxSpeed);
+			lcdSetText(uart1, 1, "Slowing Down");
+		}
+		else if(autonomousInfo.elapsedTime < (*step).timeToAccelerate)
+		{
+			magnitude = (int) ((autonomousInfo.elapsedTime * 1.0 / (*step).timeToAccelerate)
+					* (*step).maxSpeed);
 
-		if(!forward) magnitude *= -1;
+			if(!forward) magnitude *= -1;
 
-		lcdSetText(uart1, 1, "Accelerating");
+			lcdSetText(uart1, 1, "Accelerating");
+		}
+		else
+		{
+			if(forward) magnitude = (*step).maxSpeed;
+			else magnitude = -(*step).maxSpeed;
+
+			lcdSetText(uart1, 1, "Coasting");
+		}
 	}
 	else
 	{
-		if(forward) magnitude = (*step).maxSpeed;
-		else magnitude = -(*step).maxSpeed;
-
-		lcdSetText(uart1, 1, "Coasting");
+		(*step).goodDistance = 1;
 	}
 
-	if(!driveStraight)//TODO change back
+	if(!driveStraight || !(*step).goodDistance)//TODO change back
 	{
 		if(abs(angleError) < 2)
 		{
@@ -131,7 +138,7 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 			if(turnRight) rotation += (*step).minSpeed;
 			else rotation -= (*step).minSpeed;
 
-			if(turnRight) rotation = limit(rotation, (*step).maxSpeed, -(*step).maxSpeed);
+			if(turnRight) rotation = limit(rotation, (*step).maxSpeed, (*step).minSpeed);
 			else rotation = limit(rotation, -(*step).minSpeed, -(*step).maxSpeed);
 
 			//lcdSetText(uart1, 2, "P Rot Cor");
@@ -145,23 +152,23 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 
 			int turnEncoderError = right - left;
 
-			if(abs(turnEncoderError) < 5)
+			if(true)//abs(turnEncoderError) < 5)
 			{
 				goodRotation = 1;
 				//lcdSetText(uart1, 2, "Good Rotation");
 			}
-			else if(turnEncoderError > 0)
+			/*else if(turnEncoderError > 0)
 			{
-				rotation = 50;
+				rotation = 40;
 				goodRotation = 0;
 				//lcdSetText(uart1, 2, "Turning Right");
 			}
 			else
 			{
-				rotation = -50;
+				rotation = -40;
 				goodRotation = 0;
 				//lcdSetText(uart1, 2, "Turning Left");
-			}
+			}*/
 		}
 	}
 
