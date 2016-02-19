@@ -66,10 +66,10 @@
  * or instantiated, an example is shown below.
  */
 
-PropDriveToWayPoint drive24Forward;
-PropDriveToWayPoint turn180Left;
-PropDriveToWayPoint turn180Right;
-PropDriveToWayPoint drive24Backward;
+PropDriveToWayPoint mode1TurnToPile1;
+PropDriveToWayPoint mode1DriveToPile1;
+PropDriveToWayPoint mode1TurnToCenter1;
+PropDriveToWayPoint mode1DriveToCenter1;
 
 int isAuto = 1;
 
@@ -85,11 +85,11 @@ void autonomousInit()
 	 * given about them. By hovering over the function name, you can see a
 	 * list of the arguments to pass in.
 	 */
-	drive24Forward = initPropDriveToWayPoint(robotDrive, 24, 0);
-	turn180Left = initPropDriveToWayPoint(robotDrive, 0, -180);
-	drive24Backward = initPropDriveToWayPoint(robotDrive, -24, 0);
-	turn180Right = initPropDriveToWayPoint(robotDrive, 0, 180);
-
+	mode1TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, -40);
+	mode1DriveToPile1 = initPropDriveToWayPoint(robotDrive, 36, 0);
+		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 70);
+	mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, 45);
+	mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 48, 0);
 
 
 	autonomousInfo.lastStep = 0;
@@ -119,29 +119,100 @@ void autonomousPeriodic()
 				switch(autonomousInfo.step)
 				{
 				case(1):
-					propDriveToWayPoint(&drive24Forward);
+					shootFullCourt(&robotShooter);
+					turnShooterOn(&robotShooter);
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
 
-					autonomousInfo.isFinished = drive24Forward.isFinished;
+					autonomousInfo.isFinished = isShooterUpToSpeed(&robotShooter) ||
+							autonomousInfo.elapsedTime > 10000;
 					break;
 
 				case(2):
-					propDriveToWayPoint(&turn180Left);
+					intake1In(robotIntake);
+					intake2In(robotIntake);
 
-					autonomousInfo.isFinished = turn180Left.isFinished;
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 15000;
+
 					break;
 
 				case(3):
-					propDriveToWayPoint(&drive24Backward);
+					intake1In(robotIntake);
+					intake2Stop(robotIntake);
 
-					autonomousInfo.isFinished = drive24Backward.isFinished;
+					shootHalfCourt(&robotShooter);
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					propDriveToWayPoint(&mode1TurnToPile1);
+
+					autonomousInfo.isFinished = mode1TurnToPile1.isFinished;
 					break;
 
 				case(4):
-					propDriveToWayPoint(&turn180Right);
+					intake1In(robotIntake);
+					intake2Stop(robotIntake);
 
-					autonomousInfo.isFinished = turn180Right.isFinished;
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					propDriveToWayPoint(&mode1DriveToPile1);
+
+					autonomousInfo.isFinished = mode1DriveToPile1.isFinished;
 					break;
 
+				case(5):
+					intake1In(robotIntake);
+					intake2Stop(robotIntake);
+
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					propDriveToWayPoint(&mode1TurnToCenter1);
+
+					autonomousInfo.isFinished = mode1TurnToCenter1.isFinished;
+					break;
+
+				case(6):
+					if(autonomousInfo.elapsedTime > 4000)
+						intake1In(robotIntake);
+					else
+						intake1Stop(robotIntake);
+					intake2Stop(robotIntake);
+
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					propDriveToWayPoint(&mode1DriveToCenter1);
+
+					autonomousInfo.isFinished = mode1DriveToCenter1.isFinished;
+					break;
+
+				case(7):
+					intake1In(robotIntake);
+					intake2In(robotIntake);
+
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 15000;
+					break;
+
+				case(8):
+					intake1Stop(robotIntake);
+					intake2Stop(robotIntake);
+
+					tankDrive(robotDrive, 0, 0);
+
+					turnShooterOff(&robotShooter);
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
+
+					autonomousInfo.isFinished = !(isAutonomous() && isEnabled());
+					break;
 
 				default:
 					isAuto = 0;
