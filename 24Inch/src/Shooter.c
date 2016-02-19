@@ -46,6 +46,8 @@ void changeShooterSP(Shooter *shooter, int SP)
 
 void incrementShooterSP(Shooter *shooter, int amount)
 {
+	(*shooter).speed += amount;
+
 	switch((*shooter).shooterMode)
 	{
 	case(SHOOTER_HALF_COURT):
@@ -132,9 +134,10 @@ void updateShooter(Shooter *shooter)
 {
 	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
 
-	lcdPrint(uart1, 1, "Speed: %d\n", (*shooter).processVariable);
+	//lcdPrint(uart1, 1, "Speed: %d", (*shooter).processVariable);
+	lcdPrint(uart1, 1, "SP: %d", (*shooter).SP);
 
-	lcdPrint(uart1, 2, "Error: %d\n", (*shooter).controller.setPoint - (*shooter).processVariable);
+	lcdPrint(uart1, 2, "Error: %d", (*shooter).controller.setPoint - (*shooter).processVariable);
 
 	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 1)
 	{
