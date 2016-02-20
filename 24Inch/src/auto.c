@@ -110,8 +110,6 @@ void autonomousInit()
 
 	delay(500);
 
-	(*robotShooter.encoder).encoder = encoderInit(5,6,1);
-
 	stepStartTime = millis();
 }
 

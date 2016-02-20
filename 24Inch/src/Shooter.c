@@ -13,7 +13,7 @@ Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor 
 
 	newController.setPoint = 0;
 
-	Shooter newShooter = {motor1, motor2, motor3, 1, fullCourtSpeed, 0, millis(), newController, 0, millis(), &encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
+	Shooter newShooter = {motor1, motor2, motor3, 1, fullCourtSpeed, 0, millis(), newController, 0, millis(), encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
 	return newShooter;
 }
 

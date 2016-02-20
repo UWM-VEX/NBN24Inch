@@ -23,7 +23,7 @@ struct Shooter{
 	PIDController controller;
 	int processVariable;
 	long lastOffTime;
-	RedEncoder *encoder;
+	RedEncoder encoder;
 	int speed;
 	int shooterMode;
 	int fullCourtSpeed;
