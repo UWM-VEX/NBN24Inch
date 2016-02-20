@@ -22,16 +22,26 @@ double getRedEncoderVelocity(RedEncoder *encoder)
 {
 	if(micros() - (*encoder).lastReadTime > 100000)
 	{
-		int currentEncoder = encoderGet((*encoder).encoder);
+		if(micros() - (*encoder).lastReadTime < 1000000)
+		{
+			int currentEncoder = encoderGet((*encoder).encoder);
 
-		double velocity = (double) ((double) (currentEncoder - (*encoder).lastEncoder) /
+			double velocity = (double) ((double) (currentEncoder - (*encoder).lastEncoder) /
 				(double) (micros() - (*encoder).lastReadTime));
 
-		(*encoder).lastEncoder = encoderGet((*encoder).encoder);
+			(*encoder).lastEncoder = encoderGet((*encoder).encoder);
 
-		(*encoder).lastReadTime = micros();
+			(*encoder).lastReadTime = micros();
 
-		(*encoder).velocity = velocity * 100000;
+			(*encoder).velocity = velocity * 100000;
+		}
+		else
+		{
+			(*encoder).lastEncoder = encoderGet((*encoder).encoder);
+			(*encoder).lastReadTime = micros();
+			(*encoder).velocity = 0;
+		}
+
 	}
 
 	return (*encoder).velocity;

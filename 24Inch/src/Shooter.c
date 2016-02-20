@@ -152,9 +152,18 @@ int isShooterUpToSpeed(Shooter *shooter)
 
 void runShooterAtSpeed(Shooter *shooter)
 {
-	(*shooter).controller.setPoint = (*shooter).SP;
-	int speed = runPIDController(&((*shooter).controller),
-			(*shooter).processVariable);
+	int speed;
+
+	if((*shooter).turnedOn && (*shooter).processVariable == 0)
+	{
+		speed = (*shooter).SP * 0.37;
+	}
+	else
+	{
+		(*shooter).controller.setPoint = (*shooter).SP;
+		speed = runPIDController(&((*shooter).controller),
+				(*shooter).processVariable);
+	}
 
 	speed = limit(speed, 127, 0);
 

@@ -85,11 +85,22 @@ void autonomousInit()
 	 * given about them. By hovering over the function name, you can see a
 	 * list of the arguments to pass in.
 	 */
-	mode1TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, -40);
-	mode1DriveToPile1 = initPropDriveToWayPoint(robotDrive, 36, 0);
-		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 70);
-	mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, 45);
-	mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 48, 0);
+	if(alliance == BLUE)
+	{
+		mode1TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, -26);
+		mode1DriveToPile1 = initPropDriveToWayPoint(robotDrive, 34, 0);
+		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 50);
+		mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, 35);
+		mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 20, 0);
+	}
+	else
+	{
+		mode1TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, 26);
+		mode1DriveToPile1 = initPropDriveToWayPoint(robotDrive, 34, 0);
+		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 50);
+		mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, -35);
+		mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 20, 0);
+	}
 
 
 	autonomousInfo.lastStep = 0;
@@ -119,13 +130,16 @@ void autonomousPeriodic()
 				switch(autonomousInfo.step)
 				{
 				case(1):
-					shootFullCourt(&robotShooter);
-					turnShooterOn(&robotShooter);
+					if(autonomousInfo.step != autonomousInfo.lastStep)
+					{
+						shootFullCourt(&robotShooter);
+						turnShooterOn(&robotShooter);
+					}
+
 					updateShooter(&robotShooter);
 					runShooter(&robotShooter);
 
-					autonomousInfo.isFinished = isShooterUpToSpeed(&robotShooter) ||
-							autonomousInfo.elapsedTime > 10000;
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
 					break;
 
 				case(2):
@@ -135,7 +149,7 @@ void autonomousPeriodic()
 					updateShooter(&robotShooter);
 					runShooter(&robotShooter);
 
-					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 15000;
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 12000;
 
 					break;
 
@@ -143,7 +157,11 @@ void autonomousPeriodic()
 					intake1In(robotIntake);
 					intake2Stop(robotIntake);
 
-					shootHalfCourt(&robotShooter);
+					if(autonomousInfo.step != autonomousInfo.lastStep)
+					{
+						shootHalfCourt(&robotShooter);
+					}
+
 					updateShooter(&robotShooter);
 					runShooter(&robotShooter);
 

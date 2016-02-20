@@ -9,7 +9,7 @@
 
 PropDriveToWayPoint initPropDriveToWayPoint(Drive drive, double distance, int rotation)
 {
-	PropDriveToWayPoint newStep = {drive, 100, 1.00, distance, rotation, 100, 70, 0, 0, 0, 18.0, 500, 0};
+	PropDriveToWayPoint newStep = {drive, 100, 0.5, distance, rotation, 100, 30, 0, 0, 0, 18.0, 500, 0};
 	return newStep;
 }
 
