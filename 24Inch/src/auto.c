@@ -85,12 +85,13 @@ void autonomousInit()
 	 * given about them. By hovering over the function name, you can see a
 	 * list of the arguments to pass in.
 	 */
+
 	if(alliance == BLUE)
 	{
 		mode1TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, -26);
 		mode1DriveToPile1 = initPropDriveToWayPoint(robotDrive, 34, 0);
 		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 50);
-		mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, 35);
+		mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, 30);
 		mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 20, 0);
 	}
 	else
@@ -98,7 +99,7 @@ void autonomousInit()
 		mode1TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, 26);
 		mode1DriveToPile1 = initPropDriveToWayPoint(robotDrive, 34, 0);
 		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 50);
-		mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, -35);
+		mode1TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, -30);
 		mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 20, 0);
 	}
 
@@ -106,6 +107,10 @@ void autonomousInit()
 	autonomousInfo.lastStep = 0;
 	autonomousInfo.step = 1;
 	autonomousInfo.isFinished = 0;
+
+	delay(500);
+
+	(*robotShooter.encoder).encoder = encoderInit(5,6,1);
 
 	stepStartTime = millis();
 }
@@ -115,6 +120,8 @@ void autonomousInit()
  */
 void autonomousPeriodic()
 {
+	lcdPrint(uart1, 2, "%d", (int) millis());
+
 	if(autonomousInfo.step != autonomousInfo.lastStep)
 	{
 		stepStartTime = millis();
@@ -130,16 +137,15 @@ void autonomousPeriodic()
 				switch(autonomousInfo.step)
 				{
 				case(1):
-					if(autonomousInfo.step != autonomousInfo.lastStep)
+					if(autonomousInfo.elapsedTime < 100)
 					{
-						shootFullCourt(&robotShooter);
 						turnShooterOn(&robotShooter);
 					}
 
 					updateShooter(&robotShooter);
 					runShooter(&robotShooter);
 
-					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 10000;
 					break;
 
 				case(2):

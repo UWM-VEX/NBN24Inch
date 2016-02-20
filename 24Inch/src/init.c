@@ -161,13 +161,12 @@ void initializeIO() {
  * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
 
-int lcdDone = 0;
-
 void initialize() {
 	//imeInitializeAll();
 	lcdInit(uart1);
 
-	shooterEncoder = initRedEncoder(encoderInit(5, 6, 1), 100000);
+	shooterEncoder = initRedEncoder(encoderInit(5,6,1), 100000);
+
 	robotDrive = initDrive(initPantherMotor(3,1), initPantherMotor(4,0),
 			initPantherMotor(8,1), initPantherMotor(9,0),
 			encoderInit(11, 12, 1), encoderInit(1,2,1), gyroInit(1,0));
@@ -175,14 +174,13 @@ void initialize() {
 	robotIntake = initIntake(initPantherMotor(7,1), initPantherMotor(1,0),
 			initPantherMotor(10,1));
 	PIDController shooterPID = initPIDController(1, 0, 0, .37, 0, 0.5);
-	robotShooter = initShooter(shooterPID, initPantherMotor(2,1), initPantherMotor(5,0), initPantherMotor(6,0), 182, 142, shooterEncoder);
+	robotShooter = initShooter(shooterPID, initPantherMotor(2,1), initPantherMotor(5,0), initPantherMotor(6,0), 175, 142, shooterEncoder);
 
-	if(!lcdDone)
-	{
-		lcdSetBacklight(uart1, true);
-		lcdModeSelect();
-		lcdSetText(uart1, 1, "lcd done");
-	}
+	lcdSetBacklight(uart1, true);
+	lcdModeSelect();
+	lcdSetText(uart1, 1, "lcd done");
+	//delay(5000);
+	lcdSetText(uart1, 1, "ready");
 
 	lcdSetBacklight(uart1, false);
 }
