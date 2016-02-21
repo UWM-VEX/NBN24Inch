@@ -135,7 +135,7 @@ void updateShooter(Shooter *shooter)
 	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
 
 	//lcdPrint(uart1, 1, "Speed: %d", (*shooter).processVariable);
-	//lcdPrint(uart1, 1, "SP: %d", (*shooter).SP); TODO add back
+	lcdPrint(uart1, 1, "SP: %d", (*shooter).SP);
 
 	lcdPrint(uart1, 2, "Error: %d", (*shooter).controller.setPoint - (*shooter).processVariable);
 

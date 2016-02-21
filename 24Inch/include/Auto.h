@@ -33,6 +33,9 @@ int alliance;
 
 #define DO_NOTHING 0
 #define MODE_1 1
+#define PROG_SKILLS 2
+#define MODE_2 3
+#define IVY 4
 
 int autonomousSelection;
 

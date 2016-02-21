@@ -51,8 +51,8 @@ void lcdModeSelect()
 	int newButtonPressed;
 	int lastStep = 0;
 
-	const char * selectionText[] = {"Nothing", "Mode 1"};
-	int size = 2;
+	const char * selectionText[] = {"Nothing", "Mode 1", "P Skills", "Mode 2", "Ivy"};
+	int size = 5;
 
 	autonomousSelection = 0;
 
@@ -174,7 +174,7 @@ void initialize() {
 	robotIntake = initIntake(initPantherMotor(7,1), initPantherMotor(1,0),
 			initPantherMotor(10,1));
 	PIDController shooterPID = initPIDController(1, 0, 0, .37, 0, 0.5);
-	robotShooter = initShooter(shooterPID, initPantherMotor(2,1), initPantherMotor(5,0), initPantherMotor(6,0), 175, 142, shooterEncoder);
+	robotShooter = initShooter(shooterPID, initPantherMotor(2,1), initPantherMotor(5,0), initPantherMotor(6,0), 170, 135, shooterEncoder);
 
 	lcdSetBacklight(uart1, true);
 	lcdModeSelect();

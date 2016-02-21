@@ -71,6 +71,21 @@ PropDriveToWayPoint mode1DriveToPile1;
 PropDriveToWayPoint mode1TurnToCenter1;
 PropDriveToWayPoint mode1DriveToCenter1;
 
+PropDriveToWayPoint progSkillsTurnToRed;
+PropDriveToWayPoint progSkillsDriveToWall;
+PropDriveToWayPoint progSkillsBackFromWall;
+PropDriveToWayPoint progSkillsTurnToGoal;
+PropDriveToWayPoint progSkillsBackToWall;
+PropDriveToWayPoint progSkillsToShoot;
+
+PropDriveToWayPoint mode2TurnToPile1;
+PropDriveToWayPoint mode2DriveToPile1;
+PropDriveToWayPoint mode2TurnToCenter1;
+PropDriveToWayPoint mode2DriveToShoot1;
+
+PropDriveToWayPoint ivyTurn;
+PropDriveToWayPoint ivyDrive;
+
 int isAuto = 1;
 
 long int stepStartTime;
@@ -103,6 +118,31 @@ void autonomousInit()
 		mode1DriveToCenter1 = initPropDriveToWayPoint(robotDrive, 20, 0);
 	}
 
+	progSkillsTurnToRed = initPropDriveToWayPoint(robotDrive, 0, 45);
+	progSkillsDriveToWall = initPropDriveToWayPoint(robotDrive, 12*12, 0);
+	progSkillsBackFromWall = initPropDriveToWayPoint(robotDrive, -12, 0);
+	progSkillsTurnToGoal = initPropDriveToWayPoint(robotDrive, 0, -120);
+	progSkillsBackToWall = initPropDriveToWayPoint(robotDrive, -18, 0);
+	progSkillsToShoot = initPropDriveToWayPoint(robotDrive, 9, 0);
+
+	if(alliance == BLUE)
+	{
+		mode2TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, -26);
+		mode2DriveToPile1 = initPropDriveToWayPoint(robotDrive, 34, 0);
+		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 50);
+		mode2TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, 30);
+		mode2DriveToShoot1 = initPropDriveToWayPoint(robotDrive, -18, 0);
+	}
+	else
+	{
+		mode2TurnToPile1 = initPropDriveToWayPoint(robotDrive, 0, 26);
+		mode2DriveToPile1 = initPropDriveToWayPoint(robotDrive, 34, 0);
+		propDriveToWayPointSetMaxSpeed(&mode1DriveToPile1, 50);
+		mode2TurnToCenter1 = initPropDriveToWayPoint(robotDrive, 0, -30);
+		mode2DriveToShoot1 = initPropDriveToWayPoint(robotDrive, -18, 0);
+	}
+
+	ivyDrive = initPropDriveToWayPoint(robotDrive, 78, 0);
 
 	autonomousInfo.lastStep = 0;
 	autonomousInfo.step = 1;
@@ -242,6 +282,260 @@ void autonomousPeriodic()
 
 				}
 	break;
+
+	case(PROG_SKILLS):
+			switch(autonomousInfo.step)
+			{
+			case(1):
+				if(autonomousInfo.elapsedTime < 100)
+				{
+					turnShooterOn(&robotShooter);
+				}
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
+				break;
+
+			case(2):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				autonomousInfo.isFinished = autonomousInfo.elapsedTime > 45000;
+				break;
+
+			case(3):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				propDriveToWayPoint(&progSkillsTurnToRed);
+
+				autonomousInfo.isFinished = progSkillsTurnToRed.isFinished;
+				break;
+
+			case(4):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				propDriveToWayPoint(&progSkillsDriveToWall);
+
+				autonomousInfo.isFinished = progSkillsDriveToWall.isFinished ||
+						autonomousInfo.elapsedTime > 6000;
+				break;
+
+			case(5):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				propDriveToWayPoint(&progSkillsBackFromWall);
+
+				autonomousInfo.isFinished = progSkillsBackFromWall.isFinished;
+				break;
+
+			case(6):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				propDriveToWayPoint(&progSkillsTurnToGoal);
+
+				autonomousInfo.isFinished = progSkillsTurnToGoal.isFinished;
+				break;
+
+			case(7):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				propDriveToWayPoint(&progSkillsBackToWall);
+
+				autonomousInfo.isFinished = progSkillsBackToWall.isFinished ||
+						autonomousInfo.elapsedTime > 2000;
+				break;
+
+			case(8):
+				intake1In(robotIntake);
+				intake2In(robotIntake);
+
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+
+				propDriveToWayPoint(&progSkillsToShoot);
+
+				autonomousInfo.isFinished = progSkillsToShoot.isFinished;
+				break;
+
+			default:
+				updateShooter(&robotShooter);
+				runShooter(&robotShooter);
+				break;
+			}
+			break;
+
+			case(MODE_2):
+							switch(autonomousInfo.step)
+							{
+							case(1):
+								if(autonomousInfo.elapsedTime < 100)
+								{
+									turnShooterOn(&robotShooter);
+								}
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								autonomousInfo.isFinished = autonomousInfo.elapsedTime > 10000;
+								break;
+
+							case(2):
+								intake1In(robotIntake);
+								intake2In(robotIntake);
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								autonomousInfo.isFinished = autonomousInfo.elapsedTime > 12000;
+
+								break;
+
+							case(3):
+								intake1In(robotIntake);
+								intake2Stop(robotIntake);
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								propDriveToWayPoint(&mode2TurnToPile1);
+
+								autonomousInfo.isFinished = mode2TurnToPile1.isFinished;
+								break;
+
+							case(4):
+								intake1In(robotIntake);
+								intake2Stop(robotIntake);
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								propDriveToWayPoint(&mode2DriveToPile1);
+
+								autonomousInfo.isFinished = mode2DriveToPile1.isFinished;
+								break;
+
+							case(5):
+								intake1In(robotIntake);
+								intake2Stop(robotIntake);
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								propDriveToWayPoint(&mode2TurnToCenter1);
+
+								autonomousInfo.isFinished = mode2TurnToCenter1.isFinished;
+								break;
+
+							case(6):
+								if(autonomousInfo.elapsedTime > 4000)
+									intake1In(robotIntake);
+								else
+									intake1Stop(robotIntake);
+								intake2Stop(robotIntake);
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								propDriveToWayPoint(&mode2DriveToShoot1);
+
+								autonomousInfo.isFinished = mode2DriveToShoot1.isFinished;
+								break;
+
+							case(7):
+								intake1In(robotIntake);
+								intake2In(robotIntake);
+
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								autonomousInfo.isFinished = autonomousInfo.elapsedTime > 15000;
+								break;
+
+							case(8):
+								intake1Stop(robotIntake);
+								intake2Stop(robotIntake);
+
+								tankDrive(robotDrive, 0, 0);
+
+								turnShooterOff(&robotShooter);
+								updateShooter(&robotShooter);
+								runShooter(&robotShooter);
+
+								autonomousInfo.isFinished = !(isAutonomous() && isEnabled());
+								break;
+
+							default:
+								isAuto = 0;
+								break;
+
+							}
+				break;
+
+				case(IVY):
+				switch(autonomousInfo.step)
+				{
+				case(1):
+									if(autonomousInfo.elapsedTime < 100)
+									{
+										turnShooterOn(&robotShooter);
+									}
+
+									updateShooter(&robotShooter);
+									runShooter(&robotShooter);
+
+									autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
+									break;
+
+								case(2):
+									intake1In(robotIntake);
+									intake2In(robotIntake);
+
+									updateShooter(&robotShooter);
+									runShooter(&robotShooter);
+
+									autonomousInfo.isFinished = autonomousInfo.elapsedTime > 12000;
+
+									break;
+
+								case(3):
+									propDriveToWayPoint(&ivyDrive);
+
+									updateShooter(&robotShooter);
+									runShooter(&robotShooter);
+
+									autonomousInfo.isFinished = ivyDrive.isFinished;
+									break;
+
+				default:
+					isAuto = 0;
+					break;
+				}
+				break;
 
 				case(DO_NOTHING):
 					isAuto = 0;
