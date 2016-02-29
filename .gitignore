@@ -4,6 +4,7 @@
 *.obj
 *.elf
 bin/
+output.bin
 
 Project Files
 *.project
