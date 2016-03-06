@@ -23,16 +23,16 @@ struct PIDController{
 }typedef PIDController;
 
 PIDController initPIDController(double kP, double kI, double kD, double kF, int setPoint, int errorEpsilon);
-void setkP(PIDController *controller, double kP);
-void setkI(PIDController *controller, double kP);
-void setkD(PIDController *controller, double kP);
-void setkF(PIDController *controller, double kP);
-void setSetPoint(PIDController *controller, double setPoint);
-void setErrorEpsilon(PIDController *controller, double errorEpsilon);
-int getPContribution(PIDController *controller, int processVariable);
-int getIContribution(PIDController *controller, int processVariable);
-int getDContribution(PIDController *controller, int processVariable);
-int getFContribution(PIDController *controller);
-int runPIDController(PIDController *controller, int processVariable);
+void PIDsetkP(PIDController *controller, double kP);
+void PIDsetkI(PIDController *controller, double kP);
+void PIDsetkD(PIDController *controller, double kP);
+void PIDsetkF(PIDController *controller, double kP);
+void PIDsetSetPoint(PIDController *controller, double setPoint);
+void PIDsetErrorEpsilon(PIDController *controller, double errorEpsilon);
+int PIDgetPContribution(PIDController *controller, int processVariable);
+int PIDgetIContribution(PIDController *controller, int processVariable);
+int PIDgetDContribution(PIDController *controller, int processVariable);
+int PIDgetFContribution(PIDController *controller);
+int PIDRunController(PIDController *controller, int processVariable);
 
 #endif /* PIDCONTROLLER_H_ */

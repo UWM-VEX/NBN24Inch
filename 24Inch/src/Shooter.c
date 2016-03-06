@@ -107,27 +107,27 @@ void runShooter(Shooter *shooter)
 
 void shooterSetKP(Shooter *shooter, double kP)
 {
-	setkP(&((*shooter).controller), kP);
+	PIDsetkP(&((*shooter).controller), kP);
 }
 
 void shooterSetKI(Shooter *shooter, double kI)
 {
-	setkI(&((*shooter).controller), kI);
+	PIDsetkI(&((*shooter).controller), kI);
 }
 
 void shooterSetKD(Shooter *shooter, double kD)
 {
-	setkD(&((*shooter).controller), kD);
+	PIDsetkD(&((*shooter).controller), kD);
 }
 
 void shooterSetKF(Shooter *shooter, double kF)
 {
-	setkF(&((*shooter).controller), kF);
+	PIDsetkF(&((*shooter).controller), kF);
 }
 
 void shooterSetErrorEpsilon(Shooter *shooter, int errorEpsilon)
 {
-	setErrorEpsilon(&((*shooter).controller), errorEpsilon);
+	PIDsetErrorEpsilon(&((*shooter).controller), errorEpsilon);
 }
 
 void updateShooter(Shooter *shooter)
@@ -156,12 +156,13 @@ void runShooterAtSpeed(Shooter *shooter)
 
 	if((*shooter).turnedOn && (*shooter).processVariable == 0)
 	{
+		//Open loop fall back if the encoder is not working correctly
 		speed = (*shooter).SP * 0.37;
 	}
 	else
 	{
 		(*shooter).controller.setPoint = (*shooter).SP;
-		speed = runPIDController(&((*shooter).controller),
+		speed = PIDRunController(&((*shooter).controller),
 				(*shooter).processVariable);
 	}
 

@@ -46,8 +46,6 @@ double getRedEncoderVelocity(RedEncoder encoder)
 			(*encoder.lastEncoder) = encoderGet(encoder.encoder);
 			(*encoder.lastReadTime) = micros();
 			(*encoder.velocity) = 0;
-			//encoderReset((*encoder).encoder);
-			//lcdSetText(uart1, 1, "Timeout");
 		}
 
 	}

@@ -14,42 +14,42 @@ PIDController initPIDController(double kP, double kI, double kD, double kF, int 
 	return newController;
 }
 
-void setkP(PIDController *controller, double kP)
+void PIDsetkP(PIDController *controller, double kP)
 {
 	(*controller).kP = kP;
 }
 
-void setkI(PIDController *controller, double kI)
+void PIDsetkI(PIDController *controller, double kI)
 {
 	(*controller).kI = kI;
 }
 
-void setkD(PIDController *controller, double kD)
+void PIDsetkD(PIDController *controller, double kD)
 {
 	(*controller).kD = kD;
 }
 
-void setkF(PIDController *controller, double kF)
+void PIDsetkF(PIDController *controller, double kF)
 {
 	(*controller).kF = kF;
 }
 
-void setSetPoint(PIDController *controller, double setPoint)
+void PIDsetSetPoint(PIDController *controller, double setPoint)
 {
 	(*controller).setPoint = setPoint;
 }
 
-void setErrorEpsilon(PIDController *controller, double errorEpsilon)
+void PIDsetErrorEpsilon(PIDController *controller, double errorEpsilon)
 {
 	(*controller).errorEpsilon = errorEpsilon;
 }
 
-int getPContribution(PIDController *controller, int processVariable)
+int PIDgetPContribution(PIDController *controller, int processVariable)
 {
 	return (int) ((*controller).kP * ((*controller).setPoint - processVariable));
 }
 
-int getIContribution(PIDController *controller, int processVariable)
+int PIDgetIContribution(PIDController *controller, int processVariable)
 {
 	int error = (*controller).setPoint - processVariable;
 
@@ -72,7 +72,7 @@ int getIContribution(PIDController *controller, int processVariable)
 	}
 }
 
-int getDContribution(PIDController *controller, int processVariable)
+int PIDgetDContribution(PIDController *controller, int processVariable)
 {
 	int error = (*controller).setPoint - processVariable;
 	int timeDiff = (int) (millis() - (*controller).lastTime);
@@ -83,17 +83,17 @@ int getDContribution(PIDController *controller, int processVariable)
 	return (int) (slope * (*controller).kD);
 }
 
-int getFContribution(PIDController *controller)
+int PIDgetFContribution(PIDController *controller)
 {
 	return (int) ((*controller).kF * (*controller).setPoint);
 }
 
-int runPIDController(PIDController *controller, int processVariable)
+int PIDRunController(PIDController *controller, int processVariable)
 {
-	int pContribution = getPContribution(controller, processVariable);
-	int iContribution = getIContribution(controller, processVariable);
-	int dContribution = getDContribution(controller, processVariable);
-	int fContribution = getFContribution(controller);
+	int pContribution = PIDgetPContribution(controller, processVariable);
+	int iContribution = PIDgetIContribution(controller, processVariable);
+	int dContribution = PIDgetDContribution(controller, processVariable);
+	int fContribution = PIDgetFContribution(controller);
 
 	(*controller).lastError = (*controller).setPoint - processVariable;
 	(*controller).lastTime = millis();
