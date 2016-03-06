@@ -182,6 +182,7 @@ void initialize() {
 
 	shooterEncoder = initRedEncoder(encoderInit(5,6,1), 100000);
 
+	//Do not merge these changes into master
 	robotDrive = initDrive(initPantherMotor(3,1), initPantherMotor(4,0),
 			initPantherMotor(8,1), initPantherMotor(9,0),
 			encoderInit(11, 12, 1), encoderInit(1,2,1), gyroInit(1,0));

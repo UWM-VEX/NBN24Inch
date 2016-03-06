@@ -84,6 +84,7 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 	{
 		if(absDouble(distanceError) < .5)
 		{
+			//TODO need to make a decision on this
 			//magnitude = (forward) ? -10 : 10;
 			(*step).goodDistance = 1;
 			//lcdSetText(uart1, 1, "Good Distance");
@@ -122,26 +123,44 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 		(*step).goodDistance = 1;
 	}
 
-	if(!driveStraight || !(*step).goodDistance)//TODO change back
+	if(!driveStraight)//TODO add angle correction logic for driving straight
 	{
 		if(abs(angleError) < 2)
 		{
 			rotation = 0;
-			goodRotation = 1;
+			(*step).goodRotation = 1;
 
 			//lcdSetText(uart1, 2, "Good Rotation");
 		}
-		else
+		else if(abs(angleError) < (*step).slowDownAngle)
 		{
 			rotation = (int) (angleError * (*step).rotationKP);
 
-			if(turnRight) rotation += (*step).minSpeed;
-			else rotation -= (*step).minSpeed;
+			if(turnRight)
+				rotation += (*step).minSpeed;
+			else
+				rotation -= (*step).minSpeed;
 
-			if(turnRight) rotation = limit(rotation, (*step).maxSpeed, (*step).minSpeed);
-			else rotation = limit(rotation, -(*step).minSpeed, -(*step).maxSpeed);
+			if(turnRight)
+				rotation = limit(rotation, (*step).maxSpeed, (*step).minSpeed);
+			else
+				rotation = limit(rotation, -(*step).minSpeed, (*step).maxSpeed);
+		}
+		else if(autonomousInfo.elapsedTime < (*step).timeToAccelerateTurning)
+		{
+			rotation = (int) ((autonomousInfo.elapsedTime * 1.0 /
+					(*step).timeToAccelerateTurning) * (*step).maxSpeed);
 
-			//lcdSetText(uart1, 2, "P Rot Cor");
+			if(!rotation) rotation *= -1;
+
+			//lcdSetText(uart1, 1, "Accelerating");
+		}
+		else
+		{
+			if(turnRight)
+				rotation = (*step).maxSpeed;
+			else
+				rotation = -(*step).maxSpeed;
 		}
 	}
 	else
@@ -152,7 +171,7 @@ void propDriveToWayPoint(PropDriveToWayPoint *step)
 
 			int turnEncoderError = right - left;
 
-			if(true)//abs(turnEncoderError) < 5)
+			if(true)//abs(turnEncoderError) < 5) TODO Make a decision on this
 			{
 				goodRotation = 1;
 				//lcdSetText(uart1, 2, "Good Rotation");
