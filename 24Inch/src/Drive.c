@@ -1,7 +1,8 @@
 #include "main.h"
 
 /**
- * Initializes a new drive object composed of two PantherMotors.
+ * Initializes a new drive object composed of four PantherMotors, two encoders
+ * and a gyro.
  */
 Drive initDrive(PantherMotor frontLeftMotor, PantherMotor frontRightMotor,
 		PantherMotor rearLeftMotor, PantherMotor rearRightMotor,
@@ -14,8 +15,8 @@ Drive initDrive(PantherMotor frontLeftMotor, PantherMotor frontRightMotor,
 }
 
 /**
- * Drives a holonomic drive robot at the specified direction, magnitude,
- * and rotation.
+ * Assigns the left speed of the drive to left and the right speed of the drive
+ * to right.
  */
 void tankDrive(Drive drive, int left, int right)
 {
@@ -28,6 +29,10 @@ void tankDrive(Drive drive, int left, int right)
 	setPantherMotor(drive.rearRightMotor, rightSpeed);
 }
 
+/**
+ * Drives the robot with the forward/backward speed given by magnitude and
+ * the rotational speed given by rotation.
+ */
 void arcadeDrive(Drive drive, int magnitude, int rotation)
 {
 	int left = limit(magnitude + rotation, 127, -127);

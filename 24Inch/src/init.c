@@ -17,6 +17,9 @@
 
 #include "main.h"
 
+/**
+ * A helper function for the LCD that
+ */
 void changeSelection(int valueToChange, int * selection, int size)
 {
 	if(valueToChange == -1)
@@ -43,8 +46,15 @@ void changeSelection(int valueToChange, int * selection, int size)
 		}
 }
 
+/**
+ * This function will run at the when the robot syncs with its joystick.
+ * The function will exit 5 seconds after a selection has been made or when
+ * the robot becomes enabled.
+ */
 void lcdModeSelect()
 {
+	lcdSetBacklight(uart1, true);
+
 	int inModeSelection = 1;
 	int step = 1;
 	int lastButtonPress = 0;
@@ -52,12 +62,11 @@ void lcdModeSelect()
 	int lastStep = 0;
 
 	const char * selectionText[] = {"Nothing", "Mode 1", "P Skills", "Mode 2", "Ivy"};
-	int size = 5;
+	int size = sizeof(selectionText) / sizeof(int);
 
 	autonomousSelection = 0;
 
-	while((isOnline() ? (!isAutonomous() && !isEnabled()
-			&& inModeSelection) : inModeSelection))
+	while((isOnline() ? (!isEnabled() && inModeSelection) : inModeSelection))
 	{
 		printf("Step: %d\n", step);
 
@@ -124,7 +133,14 @@ void lcdModeSelect()
 			lcdPrint(uart1, 2, "%s  %s", (alliance ? "Blue" : "Red"),
 					selectionText[autonomousSelection]);
 
-			delay(5000);
+			long startTime = millis();
+
+			//Wait 5 seconds
+			while((isOnline() ? (millis() - startTime < 5000 && !isEnabled())
+					: millis() - startTime < 5000))
+			{
+				delay(20);
+			}
 
 			lcdSetBacklight(uart1, false);
 
@@ -162,7 +178,6 @@ void initializeIO() {
  */
 
 void initialize() {
-	//imeInitializeAll();
 	lcdInit(uart1);
 
 	shooterEncoder = initRedEncoder(encoderInit(5,6,1), 100000);
@@ -176,11 +191,5 @@ void initialize() {
 	PIDController shooterPID = initPIDController(1, 0, 0, .37, 0, 0.5);
 	robotShooter = initShooter(shooterPID, initPantherMotor(2,1), initPantherMotor(5,0), initPantherMotor(6,0), 170, 135, shooterEncoder);
 
-	lcdSetBacklight(uart1, true);
 	lcdModeSelect();
-	lcdSetText(uart1, 1, "lcd done");
-	//delay(5000);
-	lcdSetText(uart1, 1, "ready");
-
-	lcdSetBacklight(uart1, false);
 }

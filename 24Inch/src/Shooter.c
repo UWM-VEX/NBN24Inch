@@ -20,7 +20,7 @@ Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor 
 void turnShooterOn(Shooter *shooter)
 {
 	(*shooter).turnedOn = 1;
-	(*shooter).SP = (*shooter).speed;
+	(*shooter).SP = (*shooter).speedWhenOn;
 	puts("Shooter turned on.");
 }
 
@@ -46,7 +46,7 @@ void changeShooterSP(Shooter *shooter, int SP)
 
 void incrementShooterSP(Shooter *shooter, int amount)
 {
-	(*shooter).speed += amount;
+	(*shooter).speedWhenOn += amount;
 
 	switch((*shooter).shooterMode)
 	{
@@ -77,7 +77,7 @@ void runShooter(Shooter *shooter)
 
 	if((*shooter).turnedOn)
 	{
-		(*shooter).SP = (*shooter).speed;
+		(*shooter).SP = (*shooter).speedWhenOn;
 		speed = (*shooter).SP;
 
 		(*shooter).lastSpeed = (*shooter).SP;
@@ -189,11 +189,11 @@ void changeShooterMode(Shooter *shooter, int shooterMode)
 	switch(shooterMode)
 	{
 	case(SHOOTER_HALF_COURT):
-		(*shooter).speed = (*shooter).halfCourtSpeed;
+		(*shooter).speedWhenOn = (*shooter).halfCourtSpeed;
 		break;
 
 	case(SHOOTER_FULL_COURT):
-		(*shooter).speed = (*shooter).fullCourtSpeed;
+		(*shooter).speedWhenOn = (*shooter).fullCourtSpeed;
 		break;
 	}
 

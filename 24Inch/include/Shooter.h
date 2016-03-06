@@ -24,7 +24,7 @@ struct Shooter{
 	int processVariable;
 	long lastOffTime;
 	RedEncoder encoder;
-	int speed;
+	int speedWhenOn;
 	int shooterMode;
 	int fullCourtSpeed;
 	int halfCourtSpeed;
