@@ -38,17 +38,23 @@ double getRedEncoderVelocity(RedEncoder encoder)
 
 			velocity *= 100000;
 
-			encoder.velocity = &velocity;
-			//lcdPrint(uart1, 1, "%d", encoderGet(encoder.encoder));
+			lcdPrint(uart1, 1, "%f", velocity);
+
+			*encoder.velocity = velocity;
+
+			//lcdSetText(uart1, 2, "Update");
 		}
 		else
 		{
 			(*encoder.lastEncoder) = encoderGet(encoder.encoder);
 			(*encoder.lastReadTime) = micros();
 			(*encoder.velocity) = 0;
+			lcdSetText(uart1, 2, "Timeout");
 		}
 
 	}
 
-	return (*encoder.velocity);
+	//lcdPrint(uart1, 1, "%f", *encoder.velocity);
+
+	return *encoder.velocity;
 }
