@@ -61,7 +61,7 @@ void lcdModeSelect()
 	int newButtonPressed;
 	int lastStep = 0;
 
-	const char * selectionText[] = {"Nothing", "Mode 1", "P Skills", "Mode 2", "Ivy"};
+	const char * selectionText[] = {"Nothing", "Mode 1", "Just Turn", "Drive"};
 	int size = sizeof(selectionText) / sizeof(int);
 
 	autonomousSelection = 0;
@@ -183,9 +183,9 @@ void initialize() {
 	shooterEncoder = initRedEncoder(encoderInit(5,6,1), 100000);
 
 	//Do not merge these changes into master
-	robotDrive = initDrive(initPantherMotor(1,1), initPantherMotor(3,0),
-			initPantherMotor(2,1), initPantherMotor(4,0),
-			encoderInit(3, 4, 0), encoderInit(1,2,1), gyroInit(1,0));
+	robotDrive = initDrive(initPantherMotor(9,0), initPantherMotor(1,1),
+			initPantherMotor(10,1), initPantherMotor(2,1),
+			encoderInit(1,2,0), encoderInit(3,4,0), gyroInit(1,0));
 
 	robotIntake = initIntake(initPantherMotor(7,1), initPantherMotor(11,0),
 			initPantherMotor(101,1));
@@ -193,4 +193,6 @@ void initialize() {
 	robotShooter = initShooter(shooterPID, initPantherMotor(21,1), initPantherMotor(5,0), initPantherMotor(6,0), 170, 135, shooterEncoder);
 
 	lcdModeSelect();
+
+	lcdPrint(uart1, 2, "%d", sizeof(shooterEncoder) + sizeof(robotDrive) + sizeof(robotIntake) + sizeof(shooterPID) + sizeof(robotShooter));
 }

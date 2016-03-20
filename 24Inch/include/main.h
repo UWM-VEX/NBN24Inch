@@ -52,10 +52,10 @@
 #include "Utilities.h"
 #include "Ramp.h"
 #include "Drive.h"
+#include "DriveToWP.h"
 #include "Intake.h"
 #include "Shooter.h"
 #include "Robot.h"
-#include "PropDriveToWayPoint.h"
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
