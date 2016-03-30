@@ -166,16 +166,21 @@ void autonomousPeriodic()
 				driveToWP(&drive24Forward);
 				autonomousInfo.isFinished = drive24Forward.isFinished;
 				break;
-
 			default:
 				isAuto = 0;
 				break;
 			}
 			break;
-
 		case(DO_NOTHING):
 			isAuto = 0;
 		break;
+				default:
+					isAuto = 0;
+					break;
+
+				break;
+
+
 
 	}
 
