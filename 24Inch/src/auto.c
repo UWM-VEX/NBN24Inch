@@ -500,46 +500,48 @@ void autonomousPeriodic()
 				switch(autonomousInfo.step)
 				{
 				case(1):
-									if(autonomousInfo.elapsedTime < 100)
-									{
-										turnShooterOn(&robotShooter);
-									}
+					if(autonomousInfo.elapsedTime < 100)
+					{
+						turnShooterOn(&robotShooter);
+					}
 
-									updateShooter(&robotShooter);
-									runShooter(&robotShooter);
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
 
-									autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
-									break;
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
+					break;
 
-								case(2):
-									intake1In(robotIntake);
-									intake2In(robotIntake);
+				case(2):
+					intake1In(robotIntake);
+					intake2In(robotIntake);
 
-									updateShooter(&robotShooter);
-									runShooter(&robotShooter);
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
 
-									autonomousInfo.isFinished = autonomousInfo.elapsedTime > 12000;
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 12000;
 
-									break;
+					break;
 
-								case(3):
-									propDriveToWayPoint(&ivyDrive);
+				case(3):
+					propDriveToWayPoint(&ivyDrive);
 
-									updateShooter(&robotShooter);
-									runShooter(&robotShooter);
+					updateShooter(&robotShooter);
+					runShooter(&robotShooter);
 
-									autonomousInfo.isFinished = ivyDrive.isFinished;
-									break;
-
-				default:
-					isAuto = 0;
+					autonomousInfo.isFinished = ivyDrive.isFinished;
 					break;
 				}
 				break;
-
 				case(DO_NOTHING):
 					isAuto = 0;
 				break;
+				default:
+					isAuto = 0;
+					break;
+
+				break;
+
+
 
 	}
 
