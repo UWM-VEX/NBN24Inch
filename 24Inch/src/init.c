@@ -164,7 +164,7 @@ void lcdModeSelect()
 RedEncoder shooterEncoder;
 
 void initializeIO() {
-	robotLift = initRamp(7);
+	robotLift = initLift(9,8,7);
 }
 
 /**
