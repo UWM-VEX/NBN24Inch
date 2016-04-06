@@ -13,7 +13,7 @@ Lift initLift(int rampExtensionPort, int liftPinPort, int liftArmPort)
 	pinMode(liftPinPort, OUTPUT);
 	pinMode(liftArmPort, OUTPUT);
 
-	digitalWrite(rampExtensionPort, LOW); //????
+	digitalWrite(rampExtensionPort, HIGH); //????
 	digitalWrite(liftPinPort, LOW);
 	digitalWrite(liftArmPort, LOW);
 
@@ -24,6 +24,11 @@ Lift initLift(int rampExtensionPort, int liftPinPort, int liftArmPort)
 
 void deployRamp(Lift lift)
 {
+	digitalWrite(lift.rampExtensionPort, LOW);
+}
+
+void retractRamp(Lift lift)
+{
 	digitalWrite(lift.rampExtensionPort, HIGH);
 }
 
@@ -31,5 +36,3 @@ void liftRobot(Lift lift){
 	digitalWrite(lift.liftPinPort, HIGH);
 	digitalWrite(lift.liftArmPort, HIGH);
 }
-
-

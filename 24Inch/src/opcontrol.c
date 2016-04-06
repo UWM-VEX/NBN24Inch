@@ -138,6 +138,10 @@ void operatorControl()
 		{
 			deployRamp(robotLift);
 		}
+		else if(OIRetractRamp())
+		{
+			retractRamp(robotLift);
+		}
 		if(OILiftRobot())
 		{
 			liftRobot(robotLift);

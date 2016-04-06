@@ -71,6 +71,10 @@ int OIDeployRamp()
 {
 	return joystickGetAnalog(2,3) < -50 && joystickGetAnalog(2,2) < -50;
 }
+int OIRetractRamp()
+{
+	return joystickGetAnalog(2,3) > 50 && joystickGetAnalog(2,2) > 50;
+}
 int OILiftRobot()
 {
 	return joystickGetAnalog(2,4) < - 50 && joystickGetAnalog(2,1) > 50;

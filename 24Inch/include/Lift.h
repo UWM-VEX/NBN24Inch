@@ -20,6 +20,7 @@ struct Lift{
 
 Lift initLift(int rampExtensionPort, int liftPinPort, int liftArmPort);
 void deployRamp(Lift lift);
+void retractRamp(Lift lift);
 void liftRobot(Lift lift);
 
 
