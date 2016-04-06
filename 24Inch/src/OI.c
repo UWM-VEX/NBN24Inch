@@ -69,12 +69,11 @@ int OIHalfCourtShoot()
 }
 int OIDeployRamp()
 {
-	return joystickGetDigital(1, 5, JOY_UP) && joystickGetDigital(1, 6, JOY_UP);
+	return joystickGetAnalog(2,3) < -50 && joystickGetAnalog(2,2) < -50;
 }
 int OILiftRobot()
 {
-	//return joystickGetDigital
-	return 1;
+	return joystickGetAnalog(2,4) < - 50 && joystickGetAnalog(2,1) > 50;
 }
 
 

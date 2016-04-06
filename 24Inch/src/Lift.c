@@ -7,7 +7,7 @@
 
 #include "main.h"
 
-Lift initRamp(int rampExtensionPort, int liftPinPort, int liftArmPort)
+Lift initLift(int rampExtensionPort, int liftPinPort, int liftArmPort)
 {
 	pinMode(rampExtensionPort, OUTPUT);
 	pinMode(liftPinPort, OUTPUT);
