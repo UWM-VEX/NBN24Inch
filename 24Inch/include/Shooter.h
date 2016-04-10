@@ -16,6 +16,7 @@ struct Shooter{
 	PantherMotor motor1;
 	PantherMotor motor2;
 	PantherMotor motor3;
+	PantherMotor spinner;
 	int turnedOn;
 	int SP;
 	int lastSpeed;
@@ -31,7 +32,7 @@ struct Shooter{
 
 }typedef Shooter;
 
-Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, PantherMotor motor3, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder);
+Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor motor2, PantherMotor motor3, PantherMotor spinner, int fullCourtSpeed, int halfCourtSpeed, RedEncoder encoder);
 void turnShooterOn(Shooter *shooter);
 void turnShooterOff(Shooter *shooter);
 void changeShooterSP(Shooter *shooter, int SP);
