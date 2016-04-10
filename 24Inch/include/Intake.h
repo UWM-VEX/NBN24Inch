@@ -14,11 +14,10 @@ struct Intake{
 
 	PantherMotor intake1;
 	PantherMotor intake2;
-	PantherMotor intake3;
 
 }typedef Intake;
 
-Intake initIntake(PantherMotor intake1, PantherMotor intake2, PantherMotor intake3);
+Intake initIntake(PantherMotor intake1, PantherMotor intake2);
 void intake1In(Intake intake);
 void intake1Out(Intake intake);
 void intake1Stop(Intake intake);
