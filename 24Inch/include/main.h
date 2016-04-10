@@ -50,10 +50,10 @@
 #include "PIDController.h"
 #include "PantherMotor.h"
 #include "Utilities.h"
-#include "Ramp.h"
 #include "Drive.h"
 #include "DriveToWP.h"
 #include "Intake.h"
+#include "Lift.h"
 #include "Shooter.h"
 #include "Robot.h"
 

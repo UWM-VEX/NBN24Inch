@@ -164,7 +164,7 @@ void lcdModeSelect()
 RedEncoder shooterEncoder;
 
 void initializeIO() {
-	robotRamp = initRamp(7);
+	robotLift = initLift(8,9,7);
 }
 
 /**
@@ -182,14 +182,13 @@ void initialize() {
 
 	shooterEncoder = initRedEncoder(encoderInit(5,6,1), 100000);
 
-	//Do not merge these changes into master
-	robotDrive = initDrive(initPantherMotor(9,0), initPantherMotor(1,1),
-			initPantherMotor(10,1), initPantherMotor(2,1),
-			encoderInit(1,2,0), encoderInit(3,4,0), gyroInit(1,0));
+	robotDrive = initDrive(initPantherMotor(3,1), initPantherMotor(4,0),
+			initPantherMotor(8,1), initPantherMotor(9,0),
+			encoderInit(11, 12, 1), encoderInit(1,2,1), gyroInit(1,0));
 
-	robotIntake = initIntake(initPantherMotor(7,1), initPantherMotor(11,0),
-			initPantherMotor(101,1));
-	PIDController shooterPID = initPIDController(1, 0, 0, .37, 0, 0.5);
+	robotIntake = initIntake(initPantherMotor(7,1), initPantherMotor(1,0),
+			initPantherMotor(10,1));
+	PIDController shooterPID = initPIDController(2, 0, 0, .37, 0, 0.5);
 	robotShooter = initShooter(shooterPID, initPantherMotor(21,1), initPantherMotor(5,0), initPantherMotor(6,0), 170, 135, shooterEncoder);
 
 	lcdModeSelect();

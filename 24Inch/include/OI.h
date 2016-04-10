@@ -19,7 +19,9 @@ int OIShooterOff();
 int OIShooterUp();
 int OIShooterDown();
 int OIFullCourtShoot();
-int OIDeployRamp();
 int OIHalfCourtShoot();
+int OIDeployRamp();
+int OIRetractRamp();
+int OILiftRobot();
 
 #endif /* INCLUDE_OI_H_ */

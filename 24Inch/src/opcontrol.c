@@ -136,7 +136,15 @@ void operatorControl()
 
 		if(OIDeployRamp())
 		{
-			deployRamp(robotRamp);
+			deployRamp(robotLift);
+		}
+		else if(OIRetractRamp())
+		{
+			retractRamp(robotLift);
+		}
+		if(OILiftRobot())
+		{
+			liftRobot(robotLift);
 		}
 
 		delay(25);
