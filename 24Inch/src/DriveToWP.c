@@ -13,7 +13,7 @@ DriveToWP initDriveToWP(Drive drive, double distance, int rotation)
 
 	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 2, .turningKP = 0, .straightRotationKP = .5,
 		.distance = distance, .rotation = rotation, .straightMaxSpeed = 100, .turningMaxSpeed = 80,
-		.straightMinSpeed = 15, .turningMinSpeed = 35, .slowDownDistance = 18, .timeToAccelerate = 500,
+		.straightMinSpeed = 25, .turningMinSpeed = 35, .slowDownDistance = 18, .timeToAccelerate = 500,
 		.timeToAccelerateTurning = 250, .iteration = iterationInfo, .slowDownAngle = 900};
 	lcdPrint(uart1, 1, "%d", sizeof(newStep));
 	return newStep;
@@ -119,9 +119,9 @@ void driveToWP(DriveToWP *step)
 	if(autonomousInfo.step != autonomousInfo.lastStep)
 		driveToWPFirstInteration(step);
 
-	//lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
-	//lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
-	lcdPrint(uart1, 2, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
+	lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
+	lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
+	//lcdPrint(uart1, 2, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
 
 	int turnRight = step->iteration->angleError >= 0;
 
@@ -202,13 +202,13 @@ void driveToWP(DriveToWP *step)
 			step->iteration->rotation = (turnRight) ? -10 : 10;
 			(*step).goodRotation = 1;
 
-			lcdSetText(uart1, 1, "Good Rotation");
+			//lcdSetText(uart1, 1, "Good Rotation");
 		}
 		else if(abs(step->iteration->angleError) < (*step).slowDownAngle)
 		{
 			step->goodRotation = 0;
 			step->iteration->rotation = driveToWPGetRotationCorrection(step);
-			lcdSetText(uart1, 1, "Slowing Down");
+			//lcdSetText(uart1, 1, "Slowing Down");
 		}
 		else if(autonomousInfo.elapsedTime < (*step).timeToAccelerateTurning)
 		{
@@ -221,7 +221,7 @@ void driveToWP(DriveToWP *step)
 
 			if(!step->iteration->rotation) step->iteration->rotation *= -1;
 
-			lcdSetText(uart1, 1, "Accelerating");
+			//lcdSetText(uart1, 1, "Accelerating");
 		}
 		else
 		{
@@ -231,7 +231,7 @@ void driveToWP(DriveToWP *step)
 			else
 				step->iteration->rotation = -(*step).turningMaxSpeed;
 
-			lcdSetText(uart1, 1, "Coasting");
+			//lcdSetText(uart1, 1, "Coasting");
 		}
 	}
 
