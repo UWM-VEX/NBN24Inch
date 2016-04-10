@@ -11,10 +11,10 @@ DriveToWP initDriveToWP(Drive drive, double distance, int rotation)
 {
 	DriveToWPIterationInfo *iterationInfo = malloc(sizeof(DriveToWPIterationInfo));
 
-	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 2, .turningKP = 0.5, .straightRotationKP = 0.5,
-		.distance = distance, .rotation = rotation, .straightMaxSpeed = 100, .turningMaxSpeed = 40,
-		.straightMinSpeed = 15, .turningMinSpeed = 20, .slowDownDistance = 18, .timeToAccelerate = 500,
-		.timeToAccelerateTurning = 250, .iteration = iterationInfo, .slowDownAngle = 45};
+	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 2, .turningKP = 0, .straightRotationKP = .5,
+		.distance = distance, .rotation = rotation, .straightMaxSpeed = 100, .turningMaxSpeed = 80,
+		.straightMinSpeed = 15, .turningMinSpeed = 35, .slowDownDistance = 18, .timeToAccelerate = 500,
+		.timeToAccelerateTurning = 250, .iteration = iterationInfo, .slowDownAngle = 900};
 	lcdPrint(uart1, 1, "%d", sizeof(newStep));
 	return newStep;
 }
@@ -43,9 +43,9 @@ int driveToWPPropCorrection(DriveToWP *step, double error, double kP, int min, i
 {
 	int output = (int) (error * kP);
 
-	if(inDeadBandDouble((double) output, 0, deadBand))
+	if(inDeadBandDouble((double) error, 0, deadBand))
 		output = 0;
-	else if(output > 0)
+	else if(error > 0)
 	{
 		output += min;
 		output = limit(output, max, 0);
@@ -111,8 +111,6 @@ void driveToWPFirstInteration(DriveToWP *step)
 
 void driveToWP(DriveToWP *step)
 {
-	//lcdPrint(uart1, 2, "Gyro: %d", gyroGet((*step).drive.gyro));
-
 	driveToWPInitIterationInfo(step);
 
 	int forward = (*step).distance >= 0;
@@ -123,7 +121,7 @@ void driveToWP(DriveToWP *step)
 
 	//lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
 	//lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
-	//lcdPrint(uart1, 2, "Gyro: %d", -gyroGet((*step).drive.gyro));
+	lcdPrint(uart1, 2, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
 
 	int turnRight = step->iteration->angleError >= 0;
 
@@ -165,7 +163,7 @@ void driveToWP(DriveToWP *step)
 
 				step->iteration->magnitude = driveToWPGetMagnitudeCorrection(step);
 
-				lcdPrint(uart1, 1, "%f", step->iteration->distanceError);
+				//lcdPrint(uart1, 1, "%f", step->iteration->distanceError);
 
 				//lcdSetText(uart1, 1, "Slowing Down");
 			}
@@ -195,7 +193,7 @@ void driveToWP(DriveToWP *step)
 			//lcdSetText(uart1, 2, "Good Rotation");
 		}
 	}
-	else//TODO add angle correction logic for driving straight
+	else
 	{
 		(*step).goodDistance = 1;
 
@@ -204,13 +202,13 @@ void driveToWP(DriveToWP *step)
 			step->iteration->rotation = (turnRight) ? -10 : 10;
 			(*step).goodRotation = 1;
 
-			//lcdSetText(uart1, 2, "Good Rotation");
+			lcdSetText(uart1, 1, "Good Rotation");
 		}
 		else if(abs(step->iteration->angleError) < (*step).slowDownAngle)
 		{
 			step->goodRotation = 0;
 			step->iteration->rotation = driveToWPGetRotationCorrection(step);
-			//lcdSetText(uart1, 2, "Slowing Down");
+			lcdSetText(uart1, 1, "Slowing Down");
 		}
 		else if(autonomousInfo.elapsedTime < (*step).timeToAccelerateTurning)
 		{
@@ -218,19 +216,26 @@ void driveToWP(DriveToWP *step)
 			step->iteration->rotation = (int) ((autonomousInfo.elapsedTime * 1.0 /
 					(*step).timeToAccelerateTurning) * (*step).turningMaxSpeed);
 
+			if(!turnRight)
+				step->iteration->rotation *= -1;
+
 			if(!step->iteration->rotation) step->iteration->rotation *= -1;
 
-			//lcdSetText(uart1, 2, "Accelerating");
+			lcdSetText(uart1, 1, "Accelerating");
 		}
 		else
 		{
+			step->goodRotation = 0;
 			if(turnRight)
 				step->iteration->rotation = (*step).turningMaxSpeed;
 			else
 				step->iteration->rotation = -(*step).turningMaxSpeed;
+
+			lcdSetText(uart1, 1, "Coasting");
 		}
 	}
 
+	//lcdPrint(uart1, 1, "%d", step->iteration->rotation);
 	arcadeDrive((*step).drive, step->iteration->magnitude, step->iteration->rotation);
 
 	if(!step->goodDistance)
