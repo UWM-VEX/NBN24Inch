@@ -87,7 +87,7 @@ void autonomousInit()
 	 */
 
 	drive24Forward = initDriveToWP(robotDrive, 24, 0);
-	turn90Right = initDriveToWP(robotDrive, 0, 90);
+	turn90Right = initDriveToWP(robotDrive, 0, 45);
 	turn90Left = initDriveToWP(robotDrive, 0, -90);
 	drive24Backward = initDriveToWP(robotDrive, -24, 0);
 
