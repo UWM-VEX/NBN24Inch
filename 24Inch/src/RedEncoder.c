@@ -9,10 +9,13 @@
 
 RedEncoder initRedEncoder(Encoder encoder, long refreshTime)
 {
-	long currentTime = micros();
-	int currentEncoder = encoderGet(encoder);
-	double velocity = 0;
-	RedEncoder newEncoder = {encoder, &currentTime, &currentEncoder, &velocity};
+	long *currentTime = malloc(sizeof(long));
+	int *currentEncoder = malloc(sizeof(int));
+	double *velocity = malloc(sizeof(double));
+	*currentTime = micros();
+	*currentEncoder = encoderGet(encoder);
+	*velocity = 0;
+	RedEncoder newEncoder = {encoder, currentTime, currentEncoder, velocity};
 	return newEncoder;
 }
 
@@ -38,7 +41,7 @@ double getRedEncoderVelocity(RedEncoder encoder)
 
 			velocity *= 100000;
 
-			lcdPrint(uart1, 1, "%f", velocity);
+			//lcdPrint(uart1, 1, "%f", velocity);
 
 			*encoder.velocity = velocity;
 
