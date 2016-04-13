@@ -13,7 +13,7 @@ Shooter initShooter(PIDController controller, PantherMotor motor1, PantherMotor 
 
 	newController.setPoint = 0;
 
-	Shooter newShooter = {motor1, motor2, motor3, spinner, 1, fullCourtSpeed, 0, millis(), newController, 0, millis(), encoder, fullCourtSpeed, SHOOTER_FULL_COURT, fullCourtSpeed, halfCourtSpeed};
+	Shooter newShooter = {.motor1 = motor1, .motor2 = motor2, .motor3 = motor3, .spinner = spinner, .turnedOn = 1, .SP = fullCourtSpeed, .lastSpeed = 0, .lastChangeTime = millis(), .controller = newController, .processVariable = 0, .lastOffTime = millis(), .encoder = encoder, .speedWhenOn = fullCourtSpeed, .shooterMode = SHOOTER_FULL_COURT, .fullCourtSpeed = fullCourtSpeed, .halfCourtSpeed = halfCourtSpeed};
 	return newShooter;
 }
 
@@ -135,13 +135,12 @@ void shooterSetErrorEpsilon(Shooter *shooter, int errorEpsilon)
 void updateShooter(Shooter *shooter)
 {
 	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
-
-	//lcdPrint(uart1, 1, "Speed: %d", (*shooter).processVariable);
+	lcdPrint(uart1, 2, "Speed: %d", (*shooter).processVariable);
 	lcdPrint(uart1, 1, "SP: %d", (*shooter).SP);
 
-	lcdPrint(uart1, 2, "Error: %d", (*shooter).controller.setPoint - (*shooter).processVariable);
+	//lcdPrint(uart1, 2, "Error: %d", (*shooter).controller.setPoint - (*shooter).processVariable);
 
-	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 1)
+	if(abs((int) (*shooter).controller.setPoint - (*shooter).processVariable) > 20)
 	{
 		(*shooter).lastOffTime = millis();
 	}
