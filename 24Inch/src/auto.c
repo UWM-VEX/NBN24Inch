@@ -74,6 +74,12 @@ DriveToWP drive24Forward;
 DriveToWP turn90Right;
 DriveToWP turn90Left;
 DriveToWP drive24Backward;
+DriveToWP drive6Forward;
+DriveToWP turn55Left;
+DriveToWP turn145Right;
+DriveToWP drive12Backward;
+DriveToWP turn160Left;
+
 
 /**
  * Runs at the start of autonomous. Steps should be initialized here.
@@ -98,6 +104,18 @@ void autonomousInit()
 	delay(500);
 
 	stepStartTime = millis();
+
+
+	turn90Left = initDriveToWPdrive12ForwardToWP(robotDrive, 0, -90);
+	drive6Forward = initDriveToWP(robotDrive, 12, 0);
+	turn90Right = initDriveToWP(robotDrive, 0 , 90);
+	turn55Left = initDriveToWP(robotDrive, 0, -55);
+	turn145Right = initDriveToWP(robotDrive, 0, 145);
+	drive24Forward = initDriveToWP(robotDrive, 24, 0);
+	drive12Backward = initDriveToWP(robotDrive, -12, 0);
+	turn160Left = initDriveToWP(robotDrive, 0, -160);
+
+
 }
 
 /**
@@ -109,6 +127,9 @@ void autonomousPeriodic()
 	{
 		stepStartTime = millis();
 	}
+
+	updateShooter(&robotShooter);
+	runShooter(&robotShooter);
 
 	autonomousInfo.elapsedTime = millis() - stepStartTime;
 
@@ -174,15 +195,49 @@ void autonomousPeriodic()
 		case(DO_NOTHING):
 			isAuto = 0;
 		break;
-				default:
-					isAuto = 0;
-					break;
 
-				break;
+	case(MODE_2):
+		switch(autonomousInfo.step)
+		{
+		case(1):
+			turnShooterOn(&robotShooter);
+			intake1In(robotIntake);
+			intake2In(robotIntake);
 
-
-
-	}
+			driveToWP(&turn90Left);
+			autonomousInfo.isFinished = turn90Left.isFinished;
+			break;
+		case(2):
+			driveToWP(&drive6Forward);
+			autonomousInfo.isFinished = drive6Forward.isFinished;
+			break;
+		case(3):
+			driveToWP(&turn90Right);
+			autonomousInfo.isFinished = turn90Right.isFinished;
+			break;
+		case(4):
+			driveToWP(&turn55Left);
+			autonomousInfo.isFinished = turn55Left.isFinished;
+			break;
+		case(5):
+			intake2in(robotIntake);
+			driveToWP(&turn145Right);
+			autonomousInfo.isFinished = turn145Right.isFinished && autonomousInfo.elapsedTime > 5000;
+			break;
+		case(6):
+			intake2stop(robotIntake);
+			driveToWP(&drive12Backward);
+			autonomousInfo.isFinished = drive12Backward.isFinished;
+			break;
+		case(7):
+			driveToWP(&turn160Left);
+			autonomousInfo.isFinished = turn160Left.isFinished && autonomousInfo.elapsedTime > 5000;;
+			intake2in(robotIntake);
+			break;
+		default:
+			isAuto = 0;
+			break;
+		}
 
 
 	autonomousInfo.lastStep = autonomousInfo.step;
