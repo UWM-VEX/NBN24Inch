@@ -17,7 +17,13 @@ Lift initLift(int rampExtensionPort, int liftPinPort, int liftArmPort)
 	digitalWrite(liftPinPort, LOW);
 	digitalWrite(liftArmPort, LOW);
 
-	Lift newRamp = {.rampExtensionPort = rampExtensionPort, .liftPinPort = liftPinPort, .liftArmPort = liftArmPort};
+	long *liftTime = malloc(sizeof(long));
+	int *lifted = malloc(sizeof(int));
+
+	*liftTime = 0;
+	*lifted = 0;
+
+	Lift newRamp = {.rampExtensionPort = rampExtensionPort, .liftPinPort = liftPinPort, .liftArmPort = liftArmPort, .liftTime = liftTime, .lifted = lifted};
 	return newRamp;
 }
 
@@ -34,5 +40,12 @@ void retractRamp(Lift lift)
 
 void liftRobot(Lift lift){
 	digitalWrite(lift.liftPinPort, HIGH);
-	digitalWrite(lift.liftArmPort, HIGH);
+	*lift.liftTime = millis();
+	*lift.lifted = 1;
+}
+
+void runLift(Lift lift){
+	if(*lift.lifted && millis() - *lift.liftTime > 1000) {
+		digitalWrite(lift.liftArmPort, HIGH);
+	}
 }

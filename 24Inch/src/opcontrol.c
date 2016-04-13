@@ -120,6 +120,8 @@ void operatorControl()
 			liftRobot(robotLift);
 		}
 
+		runLift(robotLift);
+
 		delay(25);
 
 		puts("hi");

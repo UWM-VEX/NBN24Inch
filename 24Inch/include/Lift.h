@@ -15,6 +15,8 @@ struct Lift{
 	int rampExtensionPort;
 	int liftPinPort;
 	int liftArmPort;
+	long *liftTime;
+	int *lifted;
 
 }typedef Lift;
 
@@ -22,6 +24,7 @@ Lift initLift(int rampExtensionPort, int liftPinPort, int liftArmPort);
 void deployRamp(Lift lift);
 void retractRamp(Lift lift);
 void liftRobot(Lift lift);
+void runLift(Lift lift);
 
 
 
