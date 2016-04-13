@@ -6,10 +6,12 @@
  */
 Drive initDrive(PantherMotor frontLeftMotor, PantherMotor frontRightMotor,
 		PantherMotor rearLeftMotor, PantherMotor rearRightMotor,
-		Encoder leftEncoder, Encoder rightEncoder, Gyro gyro)
+		Encoder leftEncoder, Encoder rightEncoder, Gyro gyro, int leftLineTracker,
+		int rightLineTracker)
 {
 	Drive newDrive = {frontLeftMotor, frontRightMotor,
-			rearLeftMotor, rearRightMotor, leftEncoder, rightEncoder, gyro};
+			rearLeftMotor, rearRightMotor, leftEncoder, rightEncoder, gyro,
+			leftLineTracker, rightLineTracker};
 
 	return newDrive;
 }

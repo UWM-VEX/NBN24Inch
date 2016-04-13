@@ -52,6 +52,7 @@
 #include "Utilities.h"
 #include "Drive.h"
 #include "DriveToWP.h"
+#include "DriveToLine.h"
 #include "Intake.h"
 #include "Lift.h"
 #include "Shooter.h"

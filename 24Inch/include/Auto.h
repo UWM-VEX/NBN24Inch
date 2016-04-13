@@ -35,7 +35,6 @@ int alliance;
 #define MODE_1 1
 #define JUST_TURN 2
 #define JUST_DRIVE 3
-#define MODE_2 4
 
 int autonomousSelection;
 
