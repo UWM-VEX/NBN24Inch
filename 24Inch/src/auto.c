@@ -81,6 +81,12 @@ DriveToWP drive12Backward;
 DriveToWP turn160Left;
 
 
+DriveToWP worlds1TurnToPile1;
+DriveToWP worlds1DriveToPile1;
+DriveToWP worlds1BackToShoot1;
+DriveToWP worlds1TurnBackToCorner1;
+DriveToWP worlds1TurnToShoot1;
+
 /**
  * Runs at the start of autonomous. Steps should be initialized here.
  */
@@ -96,6 +102,15 @@ void autonomousInit()
 	turn90Right = initDriveToWP(robotDrive, 0, 45);
 	turn90Left = initDriveToWP(robotDrive, 0, -90);
 	drive24Backward = initDriveToWP(robotDrive, -24, 0);
+
+	if(autonomousSelection == WORLDS_1)
+	{
+		worlds1TurnToPile1 = initDriveToWP(robotDrive, 0, -20);
+		worlds1TurnBackToCorner1 = initDriveToWP(robotDrive, 0, 20);
+		worlds1DriveToPile1 = initDriveToWP(robotDrive, 30, 0);
+		worlds1BackToShoot1 = initDriveToWP(robotDrive, -42, 0);
+		worlds1TurnToShoot1 = initDriveToWP(robotDrive, 0, -45);
+	}
 
 	autonomousInfo.lastStep = 0;
 	autonomousInfo.step = 1;
@@ -192,54 +207,52 @@ void autonomousPeriodic()
 				break;
 			}
 			break;
-		case(DO_NOTHING):
-			isAuto = 0;
-		break;
 
-	case(MODE_2):
+		case(WORLDS_1):
 		switch(autonomousInfo.step)
 		{
 		case(1):
-			turnShooterOn(&robotShooter);
 			intake1In(robotIntake);
 			intake2In(robotIntake);
+			driveToWP(&worlds1TurnToPile1);
+			autonomousInfo.isFinished = worlds1TurnToPile1.isFinished;
+			break;
 
-			driveToWP(&turn90Left);
-			autonomousInfo.isFinished = turn90Left.isFinished;
-			break;
 		case(2):
-			driveToWP(&drive6Forward);
-			autonomousInfo.isFinished = drive6Forward.isFinished;
+			driveToWP(&worlds1DriveToPile1);
+			autonomousInfo.isFinished = worlds1DriveToPile1.isFinished;
 			break;
+
 		case(3):
-			driveToWP(&turn90Right);
-			autonomousInfo.isFinished = turn90Right.isFinished;
+			driveToWP(&worlds1TurnBackToCorner1);
+			autonomousInfo.isFinished = worlds1TurnBackToCorner1.isFinished;
 			break;
+
 		case(4):
-			driveToWP(&turn55Left);
-			autonomousInfo.isFinished = turn55Left.isFinished;
+			driveToWP(&worlds1BackToShoot1);
+			autonomousInfo.isFinished = worlds1BackToShoot1.isFinished;
 			break;
 		case(5):
-			intake2in(robotIntake);
-			driveToWP(&turn145Right);
-			autonomousInfo.isFinished = turn145Right.isFinished && autonomousInfo.elapsedTime > 5000;
-			break;
-		case(6):
-			intake2stop(robotIntake);
-			driveToWP(&drive12Backward);
-			autonomousInfo.isFinished = drive12Backward.isFinished;
-			break;
-		case(7):
-			driveToWP(&turn160Left);
-			autonomousInfo.isFinished = turn160Left.isFinished && autonomousInfo.elapsedTime > 5000;;
-			intake2in(robotIntake);
+			driveToWP(&worlds1TurnToShoot1);
+			autonomousInfo.isFinished = worlds1TurnToShoot1.isFinished;
 			break;
 		default:
 			isAuto = 0;
 			break;
 		}
+		break;
 
+		case(DO_NOTHING):
+			isAuto = 0;
+		break;
 
+		default:
+			isAuto = 0;
+			break;
+
+		break;
+
+	}
 	autonomousInfo.lastStep = autonomousInfo.step;
 
 	if(autonomousInfo.isFinished)
