@@ -74,18 +74,16 @@ DriveToWP drive24Forward;
 DriveToWP turn90Right;
 DriveToWP turn90Left;
 DriveToWP drive24Backward;
-DriveToWP drive6Forward;
-DriveToWP turn55Left;
-DriveToWP turn145Right;
-DriveToWP drive12Backward;
-DriveToWP turn160Left;
-
 
 DriveToWP worlds1TurnToPile1;
 DriveToWP worlds1DriveToPile1;
 DriveToWP worlds1BackToShoot1;
 DriveToWP worlds1TurnBackToCorner1;
 DriveToWP worlds1TurnToShoot1;
+DriveToWP worlds1TurnToGetToPile2;
+DriveToWP worlds1DriveToGetToPile2;
+DriveToWP worlds1TurnToPile2;
+DriveToWP worlds1DriveToPile2;
 
 /**
  * Runs at the start of autonomous. Steps should be initialized here.
@@ -110,6 +108,10 @@ void autonomousInit()
 		worlds1DriveToPile1 = initDriveToWP(robotDrive, 30, 0);
 		worlds1BackToShoot1 = initDriveToWP(robotDrive, -42, 0);
 		worlds1TurnToShoot1 = initDriveToWP(robotDrive, 0, -45);
+		worlds1TurnToGetToPile2 = initDriveToWP(robotDrive, 0, 45);
+		worlds1DriveToGetToPile2 = initDriveToWP(robotDrive, 48, 0);
+		worlds1TurnToPile2 = initDriveToWP(robotDrive, 0, 90);
+		worlds1DriveToPile2 = initDriveToWP(robotDrive, 24, 0);
 	}
 
 	autonomousInfo.lastStep = 0;
@@ -119,17 +121,6 @@ void autonomousInit()
 	delay(500);
 
 	stepStartTime = millis();
-
-
-	turn90Left = initDriveToWPdrive12ForwardToWP(robotDrive, 0, -90);
-	drive6Forward = initDriveToWP(robotDrive, 12, 0);
-	turn90Right = initDriveToWP(robotDrive, 0 , 90);
-	turn55Left = initDriveToWP(robotDrive, 0, -55);
-	turn145Right = initDriveToWP(robotDrive, 0, 145);
-	drive24Forward = initDriveToWP(robotDrive, 24, 0);
-	drive12Backward = initDriveToWP(robotDrive, -12, 0);
-	turn160Left = initDriveToWP(robotDrive, 0, -160);
-
 
 }
 
@@ -235,6 +226,23 @@ void autonomousPeriodic()
 		case(5):
 			driveToWP(&worlds1TurnToShoot1);
 			autonomousInfo.isFinished = worlds1TurnToShoot1.isFinished;
+			break;
+		case(6):
+			driveToWP(&worlds1TurnToGetToPile2);
+			autonomousInfo.isFinished = worlds1TurnToGetToPile2.isFinished;
+			break;
+		case(7):
+			driveToWP(&worlds1DriveToGetToPile2);
+			autonomousInfo.isFinished = worlds1DriveToGetToPile2.isFinished;
+			break;
+		case(8):
+			driveToWP(&worlds1TurnToPile2);
+			autonomousInfo.isFinished = worlds1TurnToPile2.isFinished;
+			break;
+		case(9):
+			driveToWP(&worlds1DriveToPile2);
+			autonomousInfo.isFinished = worlds1DriveToPile2.isFinished
+					|| autonomousInfo.elapsedTime > 6000;
 			break;
 		default:
 			isAuto = 0;
