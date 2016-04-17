@@ -206,7 +206,7 @@ void autonomousPeriodic()
 			intake1In(robotIntake);
 			intake2In(robotIntake);
 			driveToWP(&worlds1TurnToPile1);
-			autonomousInfo.isFinished = worlds1TurnToPile1.isFinished;
+			autonomousInfo.isFinished = worlds1TurnToPile1.isFinished || autonomousInfo.elapsedTime > 10000;
 			break;
 
 		case(2):
