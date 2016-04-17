@@ -36,7 +36,15 @@ void operatorControl()
 
 	while (true)
 	{
-		tankDrive(robotDrive, OIGetDriveLeft(), OIGetDriveRight());
+		int left = OIGetDriveLeft();
+		int right = OIGetDriveRight();
+
+		if(OIGetReducedDrive())
+		{
+			left = (int) left * 0.4;
+			right = (int) right * 0.4;
+		}
+		tankDrive(robotDrive, left, right);
 
 		if(OIGetIntake1In())
 		{

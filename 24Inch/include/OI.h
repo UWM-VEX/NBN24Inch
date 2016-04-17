@@ -23,5 +23,6 @@ int OIHalfCourtShoot();
 int OIDeployRamp();
 int OIRetractRamp();
 int OILiftRobot();
+int OIGetReducedDrive();
 
 #endif /* INCLUDE_OI_H_ */
