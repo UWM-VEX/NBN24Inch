@@ -11,7 +11,7 @@ DriveToWP initDriveToWP(Drive drive, double distance, int rotation)
 {
 	DriveToWPIterationInfo *iterationInfo = malloc(sizeof(DriveToWPIterationInfo));
 
-	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 2, .turningKP = 4, .straightRotationKP = .5,
+	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 8, .turningKP = 6, .straightRotationKP = 2,
 		.distance = distance, .rotation = rotation, .straightMaxSpeed = 100, .turningMaxSpeed = 60,
 		.straightMinSpeed = 25, .turningMinSpeed = 25, .slowDownDistance = 18, .timeToAccelerate = 500,
 		.timeToAccelerateTurning = 250, .iteration = iterationInfo, .slowDownAngle = 40};
@@ -93,9 +93,8 @@ void driveToWPInitIterationInfo(DriveToWP *step)
 
 	step->iteration->leftEncoder = encoderGet((*step).drive.leftEncoder);
 	step->iteration->rightEncoder = encoderGet((*step).drive.rightEncoder);
-
 	lcdPrint(uart1, 1, "Gyro: %d", deltaAngle);
-	lcdPrint(uart1, 2, "Mag Err: %f", step->iteration->distanceError);
+	//lcdPrint(uart1, 2, "Mag Err: %f", step->iteration->distanceError);
 }
 
 void driveToWPFirstInteration(DriveToWP *step)
@@ -119,9 +118,9 @@ void driveToWP(DriveToWP *step)
 	if(autonomousInfo.step != autonomousInfo.lastStep)
 		driveToWPFirstInteration(step);
 
-	lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
-	lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
-	//lcdPrint(uart1, 2, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
+	//lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
+	//lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
+	lcdPrint(uart1, 1, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
 
 	int turnRight = step->iteration->angleError >= 0;
 
@@ -256,6 +255,8 @@ void driveToWP(DriveToWP *step)
 
 	(*step).isFinished = (*step).goodDistance && (*step).goodRotation &&
 			(millis() - step->timeAtGoodRotation > 500) && (millis() - step->timeAtGoodDistance > 500);
+
+	//lcdPrint(uart1, 2, "Rot: %d", step->iteration->rotation);
 
 	if((*step).isFinished) arcadeDrive((*step).drive, 0, 0);
 }
