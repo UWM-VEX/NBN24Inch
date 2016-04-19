@@ -128,13 +128,13 @@ void autonomousInit()
 		worlds1TurnToPile1 = initDriveToWP(robotDrive, 0, -20);
 		worlds1TurnBackToCorner1 = initDriveToWP(robotDrive, 0, 20);
 		worlds1DriveToPile1 = initDriveToWP(robotDrive, 30, 0);
-		worlds1DriveBackToShoot1 = initDriveToWP(robotDrive, -42, 0);
+		worlds1DriveBackToShoot1 = initDriveToWP(robotDrive, -48, 0);
 		worlds1TurnToShoot1 = initDriveToWP(robotDrive, 0, -41);
 		worlds1FirstTurnToPile2 = initDriveToWP(robotDrive, 0, 45);
 		worlds1FirstDriveToToPile2 = initDriveToWP(robotDrive, 48, 0);
 		worlds1SecondTurnToPile2 = initDriveToWP(robotDrive, 0, 90);
 		worlds1SecondDriveToPile2 = initDriveToWP(robotDrive, 12, 0);
-		worlds1TurnToShoot2 = initDriveToWP(robotDrive, 0, -131);
+		worlds1TurnToShoot2 = initDriveToWP(robotDrive, 0, -136);
 		worlds1BackAwayFromPile2 = initDriveToWP(robotDrive, -48, 0);
 		worlds1TurnToPile3 = initDriveToWP(robotDrive, 0, 180);
 		worlds1DriveToPile3 = initDriveToWP(robotDrive, 24, 0);
@@ -299,8 +299,9 @@ void autonomousPeriodic()
 		case(10):
 			driveToWP(&worlds1SecondDriveToPile2);
 			intake2Stop(robotIntake);
-			autonomousInfo.isFinished = worlds1SecondDriveToPile2.isFinished
-					|| autonomousInfo.elapsedTime > 6000;
+			autonomousInfo.isFinished = (worlds1SecondDriveToPile2.isFinished
+					|| autonomousInfo.elapsedTime > 6000)
+					&& autonomousInfo.elapsedTime > 5000;
 			break;
 		case(11):
 			driveToWP(&worlds1BackAwayFromPile2);

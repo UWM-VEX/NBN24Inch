@@ -11,7 +11,7 @@ DriveToWP initDriveToWP(Drive drive, double distance, int rotation)
 {
 	DriveToWPIterationInfo *iterationInfo = malloc(sizeof(DriveToWPIterationInfo));
 
-	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 8, .turningKP = 6, .straightRotationKP = 2,
+	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 8, .turningKP = 6, .straightRotationKP = .5,
 		.distance = distance, .rotation = rotation, .straightMaxSpeed = 100, .turningMaxSpeed = 60,
 		.straightMinSpeed = 25, .turningMinSpeed = 25, .slowDownDistance = 18, .timeToAccelerate = 500,
 		.timeToAccelerateTurning = 250, .iteration = iterationInfo, .slowDownAngle = 40};
