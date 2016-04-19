@@ -80,4 +80,7 @@ int OILiftRobot()
 	return joystickGetAnalog(2,4) < - 50 && joystickGetAnalog(2,1) > 50;
 }
 
-
+int OIGetReducedDrive()
+{
+	return joystickGetDigital(1, 6, JOY_DOWN);
+}
