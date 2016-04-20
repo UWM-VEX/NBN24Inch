@@ -107,6 +107,8 @@ DriveToWP worlds2SecondDriveToPile3;
 DriveToWP worlds2BackAwayFromPile3;
 DriveToWP worlds2TurnToShoot3;
 
+DriveToWP worlds3TurnToGoal1;
+
 
 /**
  * Runs at the start of autonomous. Steps should be initialized here.
@@ -129,18 +131,19 @@ void autonomousInit()
 		worlds1TurnBackToCorner1 = initDriveToWP(robotDrive, 0, 20);
 		worlds1DriveToPile1 = initDriveToWP(robotDrive, 30, 0);
 		worlds1DriveBackToShoot1 = initDriveToWP(robotDrive, -48, 0);
-		worlds1TurnToShoot1 = initDriveToWP(robotDrive, 0, -41);
+		worlds1TurnToShoot1 = initDriveToWP(robotDrive, 0, -37);
 		worlds1FirstTurnToPile2 = initDriveToWP(robotDrive, 0, 45);
-		worlds1FirstDriveToToPile2 = initDriveToWP(robotDrive, 48, 0);
+		worlds1FirstDriveToToPile2 = initDriveToWP(robotDrive, 52, 0);
 		worlds1SecondTurnToPile2 = initDriveToWP(robotDrive, 0, 90);
-		worlds1SecondDriveToPile2 = initDriveToWP(robotDrive, 12, 0);
+		worlds1SecondDriveToPile2 = initDriveToWP(robotDrive, 16, 0);
 		worlds1TurnToShoot2 = initDriveToWP(robotDrive, 0, -136);
 		worlds1BackAwayFromPile2 = initDriveToWP(robotDrive, -48, 0);
-		worlds1TurnToPile3 = initDriveToWP(robotDrive, 0, 180);
+		worlds1TurnToPile3 = initDriveToWP(robotDrive, 0, -155);
 		worlds1DriveToPile3 = initDriveToWP(robotDrive, 24, 0);
-		worlds1TurnToShoot3 = initDriveToWP(robotDrive, 0 , -180);
+		worlds1TurnToShoot3 = initDriveToWP(robotDrive, 0 , 167	 );
 		driveToWPSetMaxSpeed(&worlds1DriveToPile1, 70);
 		driveToWPSetMaxSpeed(&worlds1SecondDriveToPile2, 40);
+		driveToWPSetMaxSpeed(&worlds1DriveToPile3, 70);
 	}
 	else if(autonomousSelection == WORLDS_2){
 		worlds2TurnToPile1 = initDriveToWP(robotDrive, 0, -20);
@@ -161,8 +164,11 @@ void autonomousInit()
 		worlds2TurnToShoot3 = initDriveToWP(robotDrive, 0, -135);
 		driveToWPSetMaxSpeed(&worlds2DriveToPile1, 70);
 		driveToWPSetMaxSpeed(&worlds2SecondDriveToPile3, 40);
-
 	}
+	else if(autonomousSelection == WORLDS_3){
+		worlds3TurnToGoal1 = initDriveToWP(robotDrive, 0, -50);
+	}
+
 	autonomousInfo.lastStep = 0;
 
 	autonomousInfo.step = 1;
@@ -281,9 +287,10 @@ void autonomousPeriodic()
 			intake2In(robotIntake);
 			break;
 		case(6):
-			autonomousInfo.isFinished = autonomousInfo.elapsedTime > 4000;
+			autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
 			break;
 		case(7):
+			intake2Stop(robotIntake);
 			driveToWP(&worlds1FirstTurnToPile2);
 			autonomousInfo.isFinished = worlds1FirstTurnToPile2.isFinished;
 			shootHalfCourt(&robotShooter);
@@ -298,7 +305,6 @@ void autonomousPeriodic()
 			break;
 		case(10):
 			driveToWP(&worlds1SecondDriveToPile2);
-			intake2Stop(robotIntake);
 			autonomousInfo.isFinished = (worlds1SecondDriveToPile2.isFinished
 					|| autonomousInfo.elapsedTime > 6000)
 					&& autonomousInfo.elapsedTime > 5000;
@@ -310,17 +316,20 @@ void autonomousPeriodic()
 			break;
 		case(12):
 			driveToWP(&worlds1TurnToShoot2);
-			intake2In(robotIntake);
 			autonomousInfo.isFinished = worlds1TurnToShoot2.isFinished;
 			break;
 		case(13):
-			autonomousInfo.isFinished = autonomousInfo.elapsedTime > 4000;
+			intake2In(robotIntake);
+			autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
 			break;
 		case(14):
+			intake1Out(robotIntake);
+			intake2Stop(robotIntake);
 			driveToWP(&worlds1TurnToPile3);
 			autonomousInfo.isFinished = worlds1TurnToPile3.isFinished;
 			break;
 		case(15):
+			intake1In(robotIntake);
 			driveToWP(&worlds1DriveToPile3);
 			autonomousInfo.isFinished = worlds1DriveToPile3.isFinished;
 			break;
@@ -329,7 +338,8 @@ void autonomousPeriodic()
 			autonomousInfo.isFinished = worlds1TurnToShoot3.isFinished;
 			break;
 		case(17):
-			autonomousInfo.isFinished = autonomousInfo.elapsedTime > 4000;
+			intake2In(robotIntake);
+			autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
 			break;
 		default:
 			isAuto = 0;
@@ -423,7 +433,21 @@ void autonomousPeriodic()
 				default:
 					isAuto = 0;
 					break;
-		}
+				}
+			break;
+		case(WORLDS_3):
+			switch(autonomousInfo.step){
+				case(1):
+					shootFullCourt(&robotShooter);
+					driveToWP(&worlds3TurnToGoal1);
+					intake1In(robotIntake);
+					autonomousInfo.isFinished = worlds3TurnToGoal1.isFinished;
+					break;
+				case(2):
+					intake2In(robotIntake);
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 20000;
+					break;
+			}
 		break;
 
 		case(DO_NOTHING):
