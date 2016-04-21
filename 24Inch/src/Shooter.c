@@ -135,8 +135,8 @@ void shooterSetErrorEpsilon(Shooter *shooter, int errorEpsilon)
 void updateShooter(Shooter *shooter)
 {
 	(*shooter).processVariable = (int) getRedEncoderVelocity((*shooter).encoder);
-	//lcdPrint(uart1, 2, "Speed: %d", (*shooter).processVariable);
-	//lcdPrint(uart1, 1, "SP: %d", (*shooter).SP);
+	lcdPrint(uart1, 2, "Speed: %d", (*shooter).processVariable);
+	lcdPrint(uart1, 1, "SP: %d", (*shooter).SP);
 
 	//lcdPrint(uart1, 2, "Error: %d", (*shooter).controller.setPoint - (*shooter).processVariable);
 

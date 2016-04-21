@@ -38,6 +38,9 @@ int alliance;
 #define WORLDS_1 4
 #define WORLDS_2 5
 #define WORLDS_3 6
+#define FIFTEENFEED1 7
+#define FIFTEENFEED2 8
+
 int autonomousSelection;
 
 #endif /* AUTO_H_ */

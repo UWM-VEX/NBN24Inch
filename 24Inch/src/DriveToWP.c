@@ -120,7 +120,7 @@ void driveToWP(DriveToWP *step)
 
 	//lcdPrint(uart1, 1, "Left: %d", encoderGet((*step).drive.leftEncoder));
 	//lcdPrint(uart1, 2, "Right: %d", encoderGet((*step).drive.rightEncoder));
-	lcdPrint(uart1, 1, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
+	//lcdPrint(uart1, 1, "Gyro: %d", GYRO_INVERTED * gyroGet((*step).drive.gyro));
 
 	int turnRight = step->iteration->angleError >= 0;
 
