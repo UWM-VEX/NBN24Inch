@@ -122,6 +122,15 @@ DriveToWP worlds3DriveToPile3;
 DriveToWP worlds3BackAwayFromPile3;
 DriveToWP worlds3TurnToShoot3;
 
+DriveToWP worlds4FirstTurnToGoal1;
+DriveToWP worlds4FirstDriveBack1;
+DriveToWP worlds4SecondTurnToGoal1;
+DriveToWP worlds4SecondDriveBack1;
+DriveToWP worlds4SlowDriveToPile2;
+DriveToWP worlds4FastDriveToPile2;
+DriveToWP worlds4DriveBack2;
+DriveToWP worlds4DriveBackCorrection2;
+
 DriveToWP FifteenFeed1DriveBack1;
 DriveToWP FifteenFeed1TurnToGoal1;
 
@@ -264,6 +273,33 @@ void autonomousInit()
 			driveToWPSetMaxSpeed(&worlds3SlowDriveToPile2, 70);
 		}
 	}
+
+	else if(autonomousSelection == WORLDS_4){
+		if(alliance == BLUE){
+			worlds4FirstTurnToGoal1 = initDriveToWP(robotDrive, 0, 30);
+			worlds4FirstDriveBack1 = initDriveToWP(robotDrive, -15 , 0);
+			worlds4SecondTurnToGoal1 = initDriveToWP(robotDrive, 0 , -70);
+			worlds4SecondDriveBack1 = initDriveToWP(robotDrive, -8, 0);
+			worlds4SlowDriveToPile2 = initDriveToWP(robotDrive, 30, 0);
+			worlds4FastDriveToPile2 = initDriveToWP(robotDrive, 18, 0);
+			worlds4DriveBack2 = initDriveToWP(robotDrive, -42, 0);
+			worlds4DriveBackCorrection2 = initDriveToWP(robotDrive, 0, 5);
+			driveToWPSetMaxSpeed(&worlds4SecondDriveBack1, 40);
+			driveToWPSetMaxSpeed(&worlds4SlowDriveToPile2, 70);
+		}
+		else{
+			worlds4FirstTurnToGoal1 = initDriveToWP(robotDrive, 0, -30);
+			worlds4FirstDriveBack1 = initDriveToWP(robotDrive, -15 , 0);
+			worlds4SecondTurnToGoal1 = initDriveToWP(robotDrive, 0 , 80);
+			worlds4SecondDriveBack1 = initDriveToWP(robotDrive, -8, 0);
+			worlds4SlowDriveToPile2 = initDriveToWP(robotDrive, 30, 0);
+			worlds4FastDriveToPile2 = initDriveToWP(robotDrive, 18, 0);
+			worlds4DriveBack2 = initDriveToWP(robotDrive, -42, 0);
+			worlds4DriveBackCorrection2 = initDriveToWP(robotDrive, 0, 5);
+			driveToWPSetMaxSpeed(&worlds4SecondDriveBack1, 30);
+			driveToWPSetMaxSpeed(&worlds4SlowDriveToPile2, 70);
+		}
+	}
 	else if(autonomousSelection == FIFTEENFEED1){
 		if(alliance == BLUE)
 		{
@@ -279,15 +315,15 @@ void autonomousInit()
 	else if(autonomousSelection == FIFTEENFEED2){
 		if(alliance == BLUE){
 			FifteenFeed2FirstTurnToGoal1 = initDriveToWP(robotDrive, 0, 30);
-			FifteenFeed2FirstDriveBack1 = initDriveToWP(robotDrive, -16 , 0);
-			FifteenFeed2SecondTurnToGoal1 = initDriveToWP(robotDrive, 0 , -75);
+			FifteenFeed2FirstDriveBack1 = initDriveToWP(robotDrive, -17 , 0);
+			FifteenFeed2SecondTurnToGoal1 = initDriveToWP(robotDrive, 0 , -74);
 			FifteenFeed2SecondDriveBack1 = initDriveToWP(robotDrive, -14, 0);
 			driveToWPSetMaxSpeed(&FifteenFeed2SecondDriveBack1, 40);
 		}
 		else {
 			FifteenFeed2FirstTurnToGoal1 = initDriveToWP(robotDrive, 0, -30);
-			FifteenFeed2FirstDriveBack1 = initDriveToWP(robotDrive, -16, 0);
-			FifteenFeed2SecondTurnToGoal1 = initDriveToWP(robotDrive, 0 , 75);
+			FifteenFeed2FirstDriveBack1 = initDriveToWP(robotDrive, -17 , 0);
+			FifteenFeed2SecondTurnToGoal1 = initDriveToWP(robotDrive, 0 , 74);
 			FifteenFeed2SecondDriveBack1 = initDriveToWP(robotDrive, - 14, 0);
 			driveToWPSetMaxSpeed(&FifteenFeed2SecondDriveBack1, 40);
 		}
@@ -639,6 +675,57 @@ void autonomousPeriodic()
 			}
 		break;
 
+		case(WORLDS_4):
+			switch(autonomousInfo.step){
+				/*case(1):
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
+					break;*/
+				case(1):
+					shootFullCourt(&robotShooter);
+					intake1In(robotIntake);
+					driveToWP(&worlds4FirstTurnToGoal1);
+					autonomousInfo.isFinished = worlds4FirstTurnToGoal1.isFinished ||autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(2):
+					driveToWP(&worlds4FirstDriveBack1);
+					autonomousInfo.isFinished = worlds4FirstDriveBack1.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(3):
+					driveToWP(&worlds4SecondTurnToGoal1);
+					autonomousInfo.isFinished = worlds4SecondTurnToGoal1.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(4):
+					intake2In(robotIntake);
+					driveToWP(&worlds4SecondDriveBack1);
+					autonomousInfo.isFinished = worlds4SecondDriveBack1.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(5):
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 5000;
+					break;
+				case(6):
+					intake2Stop(robotIntake);
+					driveToWP(&worlds4SlowDriveToPile2);
+					autonomousInfo.isFinished = worlds4SlowDriveToPile2.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(7):
+					driveToWP(&worlds4FastDriveToPile2);
+					autonomousInfo.isFinished = worlds4FastDriveToPile2.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(8):
+					driveToWP(&worlds4DriveBack2);
+					autonomousInfo.isFinished = worlds4DriveBack2.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(9):
+					intake2In(robotIntake);
+					driveToWP(&worlds4DriveBackCorrection2);
+					autonomousInfo.isFinished = worlds4DriveBackCorrection2.isFinished || autonomousInfo.elapsedTime > globalTimeout;
+					break;
+				case(10):
+					autonomousInfo.isFinished = autonomousInfo.elapsedTime > 30000;
+				break;
+			}
+		break;
+
 		case(FIFTEENFEED1):
 			switch(autonomousInfo.step){
 				case(1):
@@ -675,16 +762,15 @@ void autonomousPeriodic()
 						autonomousInfo.isFinished = FifteenFeed2SecondTurnToGoal1.isFinished || autonomousInfo.elapsedTime > globalTimeout;
 						break;
 					case(4):
+						intake2In(robotIntake);
 						driveToWP(&FifteenFeed2SecondDriveBack1);
 						autonomousInfo.isFinished = FifteenFeed2SecondDriveBack1.isFinished || autonomousInfo.elapsedTime > globalTimeout;
 						break;
 					case(5):
-						intake2In(robotIntake);
 						autonomousInfo.isFinished = autonomousInfo.elapsedTime > 40000;
 						break;
 				 }
 				break;
-
 
 			default:
 			isAuto = 0;
