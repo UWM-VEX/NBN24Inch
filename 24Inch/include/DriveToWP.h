@@ -50,7 +50,7 @@ struct DriveToWP{
 
 }typedef DriveToWP;
 
-DriveToWP initDriveToWP(Drive drive, double distance, int rotation);
+DriveToWP *initDriveToWP(Drive drive, double distance, int rotation);
 void driveToWPSetMagnitudeKP(DriveToWP *step, double kP);
 void driveToWPSetRotationKP(DriveToWP *step, double kP);
 void driveToWPSetMaxSpeed(DriveToWP *step, int speed);

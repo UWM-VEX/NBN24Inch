@@ -7,15 +7,34 @@
 
 #include "main.h"
 
-DriveToWP initDriveToWP(Drive drive, double distance, int rotation)
+DriveToWP *initDriveToWP(Drive drive, double distance, int rotation)
 {
 	DriveToWPIterationInfo *iterationInfo = malloc(sizeof(DriveToWPIterationInfo));
 
-	DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 8, .turningKP = 6, .straightRotationKP = .5,
+	/*DriveToWP newStep = {.drive = robotDrive, .magnitudeKP = 8, .turningKP = 6, .straightRotationKP = .5,
 		.distance = distance, .rotation = rotation, .straightMaxSpeed = 100, .turningMaxSpeed = 60,
 		.straightMinSpeed = 25, .turningMinSpeed = 25, .slowDownDistance = 18, .timeToAccelerate = 500,
 		.timeToAccelerateTurning = 250, .iteration = iterationInfo, .slowDownAngle = 40};
-	lcdPrint(uart1, 1, "%d", sizeof(newStep));
+	lcdPrint(uart1, 1, "%d", sizeof(newStep));*/
+
+	DriveToWP *newStep = malloc(sizeof(DriveToWP));
+
+	newStep->drive = robotDrive;
+	newStep->magnitudeKP = 8;
+	newStep->turningKP = 6;
+	newStep->straightRotationKP = 0.5;
+	newStep->distance = distance;
+	newStep->rotation = rotation;
+	newStep->straightMaxSpeed = 100;
+	newStep->turningMaxSpeed = 60;
+	newStep->straightMinSpeed = 25;
+	newStep->turningMinSpeed = 25;
+	newStep->slowDownDistance = 18;
+	newStep->timeToAccelerate = 500;
+	newStep->timeToAccelerateTurning = 250;
+	newStep->iteration = iterationInfo;
+	newStep->slowDownAngle = 40;
+
 	return newStep;
 }
 
