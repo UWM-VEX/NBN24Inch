@@ -56,16 +56,16 @@ int PIDgetIContribution(PIDController *controller, int processVariable)
 	if(abs(error) < (*controller).errorEpsilon)
 	{
 		(*controller).sumOfError = 0;
-		puts("Error cleared.");
+		//puts("Error cleared.");
 		return 0;
 	}
 	else
 	{
-		puts("Error accumulated.");
+		//puts("Error accumulated.");
 		long timeDiff = millis() - (*controller).lastTime;
 		int newError = (int) timeDiff * error;
 		(*controller).sumOfError += newError;
-		printf("Sum of Error: %d\n", (*controller).sumOfError);
+		//printf("Sum of Error: %d\n", (*controller).sumOfError);
 		long numToReturn = (long) (*controller).sumOfError * (*controller).kI;
 		numToReturn = limit(numToReturn, 2000000000, -2000000000);
 		return (int) numToReturn;
@@ -98,9 +98,9 @@ int PIDRunController(PIDController *controller, int processVariable)
 	(*controller).lastError = (*controller).setPoint - processVariable;
 	(*controller).lastTime = millis();
 
-	printf("PV: %d\n", processVariable);
-	printf("SP: %d\n", (*controller).setPoint);
-	printf("I: %d\n", iContribution);
+	//printf("PV: %d\n", processVariable);
+	//printf("SP: %d\n", (*controller).setPoint);
+	//printf("I: %d\n", iContribution);
 
 	return pContribution + iContribution + dContribution + fContribution;
 }

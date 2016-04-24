@@ -130,6 +130,6 @@ void operatorControl()
 
 		delay(25);
 
-		puts("hi");
+		//puts("hi");
 	}
 }

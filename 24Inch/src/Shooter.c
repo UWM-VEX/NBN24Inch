@@ -21,7 +21,7 @@ void turnShooterOn(Shooter *shooter)
 {
 	(*shooter).turnedOn = 1;
 	(*shooter).SP = (*shooter).speedWhenOn;
-	puts("Shooter turned on.");
+	//puts("Shooter turned on.");
 	setPantherMotor(shooter->spinner, 127);
 }
 

@@ -295,7 +295,7 @@ void autonomousInit()
 			worlds4SlowDriveToPile2 = initDriveToWP(robotDrive, 30, 0);
 			worlds4FastDriveToPile2 = initDriveToWP(robotDrive, 18, 0);
 			worlds4DriveBack2 = initDriveToWP(robotDrive, -42, 0);
-			worlds4DriveBackCorrection2 = initDriveToWP(robotDrive, 0, 5);
+			worlds4DriveBackCorrection2 = initDriveToWP(robotDrive, 0, 3);
 			driveToWPSetMaxSpeed(&worlds4SecondDriveBack1, 30);
 			driveToWPSetMaxSpeed(&worlds4SlowDriveToPile2, 70);
 		}
@@ -808,7 +808,7 @@ void autonomous()
 
 		delay(20);
 
-		puts("Autonomous");
+		//puts("Autonomous");
 	}
 }
 
